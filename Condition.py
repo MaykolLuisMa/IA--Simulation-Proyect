@@ -1,23 +1,23 @@
-from Product import Marquet_Product_Dates
+from Product import market_Product_Dates
 from typing import List
 from utils import random_up, random_down
 import numpy as np
 class Condition:
-    def modify_by_condition(self, products : List[Marquet_Product_Dates]):
+    def modify_by_condition(self, products : List[market_Product_Dates]):
         pass
     def is_occurred(self):
         pass
 class Adaptation_5_porcent(Condition):
-    def modify_by_condition(self, products : List[Marquet_Product_Dates]):
+    def modify_by_condition(self, products : List[market_Product_Dates]):
         for p in products:
             if p.general_offert > p.general_demand:
-                p.external_marquet_offert = random_down(p.external_marquet_offert)
+                p.external_market_offert = random_down(p.external_market_offert)
             else:
-                p.external_marquet_offert = random_up(p.external_marquet_offert)
+                p.external_market_offert = random_up(p.external_market_offert)
     def is_occurred(self):
         return super().is_occurred()
 
-def compute_condition(products : List[Marquet_Product_Dates], conditions : List[Condition]):
+def compute_condition(products : List[market_Product_Dates], conditions : List[Condition]):
     for condition in conditions:
         condition.modify_by_condition(products)
 
@@ -40,7 +40,7 @@ class Hyerinflation(Condition):
         porcent = [19,20,16,17,18,21,26,34,36,46,57,85,84,80,67,80,110,128,125,223,233,148,144,142
                    ,192,54,18,45,31,25,34,65,24,21,36,33,65,22,21,80,15,20,55]
         return porcent
-    def modify_by_condition(self, products : List[Marquet_Product_Dates]):
+    def modify_by_condition(self, products : List[market_Product_Dates]):
         for p in products:
             p.price *= self.porcent[self.iteration]
         self.iteration+=1
