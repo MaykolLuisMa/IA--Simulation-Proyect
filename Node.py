@@ -1,7 +1,8 @@
 import utils
 from Company import get_company_value
+from State import State
 class Node:
-    def __init__(self,company, state, parent, action, path_cost,deep):
+    def __init__(self,company, state : State, parent, action, path_cost,deep):
         self.company=company
         self.state=state 
         self.parent=parent 
@@ -14,7 +15,7 @@ class Node:
     
     def __lt__(self, other): return self.path_cost < other.path_cost
 
-def is_goal(initial_node : Node, final_node : Node, increment = 1.3):
+def is_goal(initial_node : Node, final_node : Node, increment = 1.1):
     initial_node_value = initial_node.get_node_value()
     final_node_value = final_node.get_node_value()
     
@@ -24,4 +25,4 @@ def is_goal(initial_node : Node, final_node : Node, increment = 1.3):
     print("final")
     print(final_node_value)
     print("_________________")
-    return final_node_value/initial_node_value > 1#increment
+    return final_node_value/initial_node_value > increment

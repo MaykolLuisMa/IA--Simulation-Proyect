@@ -85,7 +85,7 @@ class Market:
         for p in global_seller.in_sale:
             demand = global_buyer.to_buy.get(p.product.id).amount,to_buy_dates.get(p.product.id).amount
             offert = global_seller.in_sale.get(p.product.id).amount,in_sale_dates[p.product.id].amount
-            price = in_sale_dates[p.product.id].price * (to_buy_dates[p.product.id].amount/in_sale_dates[p.product.id].amount)
+            price = in_sale_dates[p.product.id].price * (to_buy_dates[p.product.id].amount/max(1,in_sale_dates[p.product.id].amount))
             product = global_seller.in_sale.get(p.product.id).product
             market_products_dates.append(market_Product_Dates(product,price,offert,demand))
         return market_products_dates

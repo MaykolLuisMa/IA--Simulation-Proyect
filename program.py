@@ -7,7 +7,7 @@ from Condition import Condition
 from State import State, next_state
 from Register import Register
 from Node import Node
-from Graph_Search_Algorhitms import astar_search
+from Graph_Search_Algorhitms import astar_search, get_next_node
 from Posible_Actions import Action
 from Initial_State import initial_state
 
@@ -26,7 +26,8 @@ class Simulation:
             for corp in self.state.companies.values():
                 self.register.companies_registers[corp.id].value.append(get_company_value(corp,self.state.market))
                 node = Node(corp,self.state,None,None,0,0)
-                next_node = astar_search(node)
+                goal_node = astar_search(node)
+                next_node = get_next_node(node,goal_node)
                 print(next_node.action)
                 self.register.companies_registers[corp.id].actions.append(next_node.action)
                 actions.append(next_node.action)
@@ -57,3 +58,4 @@ for corp in sim.register.companies_registers:
     for i in range(len(sim.register.companies_registers[corp])):
         print(f"Value: {sim.register.companies_registers[corp].value[i]}")
         print(f"Action: {sim.register.companies_registers[corp].actions[i]}")
+
