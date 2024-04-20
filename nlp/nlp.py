@@ -2,6 +2,7 @@
 from openai import OpenAI
 from nlp.prompt import *
 
+#respuesta del modelo a la query ingresada por el usuario
 def response(query: str):
   #cargar el server local
   client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")

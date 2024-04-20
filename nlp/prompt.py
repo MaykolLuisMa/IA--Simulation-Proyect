@@ -3,5 +3,7 @@ SYSTEM_PROMPT = "Eres un asistente que responde preguntas sobre sexo"
 
 #prompt generado con la query del usuario
 def build_prompt(query: str):
-  prompt = f'Necesito que proceses la siguiente peticion de un usuario: {query}'
+  prompt = 'Necesito que me envies un objeto de tipo json solamente con los cambos "name" y "age"\n'
+  prompt += 'En dependencia de lo que ingrese el usuario procesa los datos y enviame el archivo json. Esta es la informacion del usuario:\n'
+  prompt += f'"{query}"'
   return prompt
