@@ -12,6 +12,9 @@ class Action:
     def ejecute_action(self):
         self.f(self.company,self.state,*self.args)
 
+    def __str__(self) -> str:
+        return self.f.__name__
+
 def action_cost(company,past_state : State,new_state : State,action : Action):
     return 1
 

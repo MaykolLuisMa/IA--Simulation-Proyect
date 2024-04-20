@@ -24,4 +24,4 @@ def is_goal(initial_node : Node, final_node : Node, increment = 1.3):
     print("final")
     print(final_node_value)
     print("_________________")
-    return final_node_value/initial_node_value >= 1#increment
+    return final_node_value/initial_node_value > 1#increment

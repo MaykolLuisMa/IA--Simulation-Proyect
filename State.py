@@ -14,15 +14,16 @@ class State:
         self.agreements = agreements
         self.loans = loans
         self.conditions = conditions
+    
 
-    def next_state(self,company_actions : List):
-        next = self
-        compute_agreements(next)
-        compute_loans(next)
-        compute_operation_cost(next)
-        compute_company_actions(next, company_actions)
-        next.market.ejecute_iteration(self.conditions)
-        return self
+def next_state(state : State,company_actions : List):
+        compute_agreements(state)
+        compute_loans(state)
+        compute_operation_cost(state)
+        compute_company_actions(state, company_actions)
+        state.market.ejecute_iteration(state.conditions)
+        return state
+
 def compute_agreements(state : State):
     for a in state.agreements:
         a.duration += 1
@@ -46,5 +47,6 @@ def compute_operation_cost(state : State):
 
 def compute_company_actions(state : State, company_action : List):
     for act in company_action:
+        act.company = state.companies[act.company.id]
         act.state = state
         act.ejecute_action()

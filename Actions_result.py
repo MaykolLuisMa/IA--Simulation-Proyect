@@ -1,11 +1,11 @@
 from Posible_Actions import Action
-from State import State
+from State import State, next_state
 from Company import Company
 from Node import Node
 import Posible_Actions
 from copy import deepcopy
 def action_result(action : Action):
-    action.state = action.state.next_state([action])
+    action.state = next_state(action.state,[action])
     return action.company, action.state
 
 def expand_node(node_to_expand : Node):

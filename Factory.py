@@ -31,7 +31,7 @@ class Factory:
         return self.id.__hash__()    
     def calculate_alpha(self,products : ProductCollection, alpha = 1):
         used = {p.product.id: p.amount*alpha for p in self.necessary_products}
-        if (alpha <= self.product_limit) and all((used[p.product.id] <= p.amount) for p in products):
+        if (alpha <= self.product_limit) and all((p.product.id in used.keys()) for p in self.necessary_products)and all((used[p.product.id] <= p.amount) for p in products if p.product.id in used):
             return self.calculate_alpha(products,alpha+1)
         else:
             return alpha-1
