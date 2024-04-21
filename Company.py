@@ -17,10 +17,10 @@ class Company:
     def is_global_company():
         return False
     
-    def get_operation_cost(self,personal,inflation_factor):
-        cost = (self.basic_operation_cost*4/10)+((self.basic_operation_cost*6/10)*(personal.basic_price/10))*self.staff_capacity
-        cost += sum([calculate_operation_cost(f_key,personal,self.factories)*self.factories[f_key] for f_key in self.factories])
-        return cost*inflation_factor
+    def get_operation_cost(self,inflation_factor):
+        cost = self.basic_operation_cost*self.staff_capacity
+        cost += sum([calculate_operation_cost(f_key,inflation_factor,self.factories)*self.factories[f_key] for f_key in self.factories])
+        return cost
     
     def process_sell(self, product : Product_in_sale):
         self.products.extract(product,product.amount) 
@@ -35,10 +35,16 @@ class Company:
         return True, product.amount
 
     def add_products(self, products : ProductCollection):
+        self.products.coin = self.coin
         new_products = add_products(self.products, products)
         is_valid = new_products.is_positive()
         if is_valid:
+             self.coin = new_products.coin
              self.products = new_products
+        else:
+             print("No valid")
+             print(new_products.coin)
+             print([p.amount for p in new_products])
         return is_valid
     
     def evaluate_agreement(self, company, agreement) -> bool:
@@ -57,7 +63,7 @@ class Company:
 
     def upgrade_staff_capacity(self,personal : Personal):
         self.add_products([-(personal.basic_price*math.pow(self.staff_capacity+1,2))])
-        self.staff_capacity += 1
+        self.staff_capacity += 0.1
     
 class Seller:
     def __init__(self, company : Company, in_sale : ProductCollection):
@@ -93,10 +99,10 @@ class Global_Company(Company):
 
 def get_company_value(corp : Company, market):
     val = 0
-    val += corp.coin*market.get_inflation_factor()
-    val += sum([f.building_cost for f in corp.factories])
-    val += sum([p.product.basic_price for p in corp.products])
-    val += corp.staff_capacity*market.personal.basic_price
+    val += corp.coin/market.get_inflation_factor()
+    val += sum([f.building_cost*i for f,i in corp.factories.items()])
+    val += sum([p.product.basic_price*p.amount for p in corp.products])
+    val += corp.staff_capacity*market.personal.basic_price*market.inflation_factor
     return val
 
 #______________________________________________________________________________
@@ -108,9 +114,10 @@ def buy(company, state, products : ProductCollection):
 
 def build_factory(company : Company,state, factory : Factory):
         cost = calculate_build_cost(factory, company.factories, state.market.inflation_factor)
-        company.add_products(ProductCollection([],cost))
-        company.add_factory(factory)
-
+        is_build = company.add_products(ProductCollection([],-cost))
+        if is_build:
+             company.add_factory(factory)
+        return is_build
 def ask_loan(company, state, loan):
         if loan.client.evaluate_loan():
             state.loans.append(loan)
@@ -132,6 +139,8 @@ def propose_agreement(company1, state, company2, agreement):
         if company1.evaluate_agreement(agreement):
             state.agreements.append(agreement)
 
+def nothing(company, state):
+    pass
 def pay_loan(company,state, loan : Loan):
         loan.bank.add_products([loan.coin])
         company.add_products([-loan.coin])

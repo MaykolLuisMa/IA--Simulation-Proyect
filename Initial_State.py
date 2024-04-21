@@ -1,5 +1,5 @@
 from Product import Product, Product_in_sale, AccountedProduct,ProductCollection
-from Company import Company,Seller,Buyer, Global_Company
+from Company import Company,Seller,Buyer, Global_Company,get_company_value, build_factory
 from Market import Market
 from typing import List
 from Condition import Adaptation_5_porcent
@@ -31,4 +31,13 @@ global_buyer = Buyer(Global_Company(),to_buy)
 
 market = Market(global_seller,global_buyer,product_list)
 initial_state = State(company_list,market,factory_list,[],[],[Adaptation_5_porcent()])
+
+inflationfactor = market.get_inflation_factor()
+
+
+#build_factory(company_list[0],initial_state,factory_list[0])
+#print(f"Inflation {inflationfactor}")
+#print(F"Factories {company_list[0].factories}")
+#print(f"Company operation cost: {company_list[0].get_operation_cost(inflationfactor)}")
+#print(f"Company value {get_company_value(company_list[0],market)}")
 

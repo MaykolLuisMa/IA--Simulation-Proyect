@@ -51,7 +51,7 @@ class market_Product_Dates:
 class ProductCollection:
     def __init__(self, col : List,coin = 0) -> None:
         self.col = {}
-        self.coin = 0
+        self.coin = coin
         for p in col:
             if type(p) == Product:
                 self.col[p.id]=p
@@ -102,11 +102,11 @@ class Personal(Product):
 
 def add_products(products1 : ProductCollection, products2 : ProductCollection):
         products = ProductCollection([])
-        products.append(None,products1.coin+products2.coin)
         for p in products1:
             products.append(p.product,p.amount)
         for p in products2:
             products.append(p.product,p.amount)
+        products.coin = products1.coin + products2.coin
         return products
         
 

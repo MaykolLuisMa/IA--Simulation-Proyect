@@ -10,7 +10,6 @@ def action_result(action : Action):
 
 def expand_node(node_to_expand : Node):
     node = deepcopy(node_to_expand)
-
     for action in Posible_Actions.determinate_posible_actions(node.company,node.state):
         c_company, c_state = action_result(action)
         cost = node.path_cost + Posible_Actions.action_cost(node.company,node.state,c_state,action)

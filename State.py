@@ -32,8 +32,8 @@ class State:
 def next_state(state : State,company_actions : List):
         compute_agreements(state)
         compute_loans(state)
-        compute_operation_cost(state)
         compute_company_actions(state, company_actions)
+        compute_operation_cost(state)
         state.market.ejecute_iteration(state.conditions)
         return state
 
@@ -54,9 +54,14 @@ def compute_loans(state : State):
 
 def compute_operation_cost(state : State):
     inflation_factor = state.market.get_inflation_factor()
+    to_delete = []
     for corp in state.companies.values():
-        cost = corp.get_operation_cost(state.market.personal,inflation_factor)
-        corp.add_products(ProductCollection([],-cost))
+        cost = corp.get_operation_cost(inflation_factor)
+        is_soportable = corp.add_products(ProductCollection([],-cost))
+        if is_soportable == False:
+            to_delete.append(corp.id)            
+    for id in to_delete:
+        state.companies.pop(id,None)
 
 def compute_company_actions(state : State, company_action : List):
     for act in company_action:

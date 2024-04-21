@@ -17,22 +17,29 @@ class Simulation:
         self.last_iteration_dates = []
         self.register = Register(self.state.companies.values())
 
-    def ejecution(self,duration_limit = 10):
+    def ejecution(self,duration_limit = 100):
         for i in range(duration_limit):
             inflation_factor = self.state.market.get_inflation_factor()
             self.register.inflation.append(inflation_factor)
             
             actions = []
             for corp in self.state.companies.values():
+                print(f"company value: {get_company_value(corp,self.state.market)}")
+                print(f"company coin {corp.coin}")
                 self.register.companies_registers[corp.id].value.append(get_company_value(corp,self.state.market))
                 node = Node(corp,self.state,None,None,0,0)
                 goal_node = astar_search(node)
                 next_node = get_next_node(node,goal_node)
                 print(next_node.action)
+                print([p for p in corp.products])
+                
                 self.register.companies_registers[corp.id].actions.append(next_node.action)
                 actions.append(next_node.action)
+            if len(self.state.companies.values()) == 0:
+                break
             for i in self.state.companies[0].factories.items():
                 print(f"Factoires {i}")
+            input()
             self.state = next_state(self.state,actions)
 
     def print_products(self):
@@ -52,10 +59,13 @@ class Simulation:
             print("_____")
         print("_____________________________________________")
     
+
+
 sim = Simulation(initial_state)
 sim.ejecution()
 for corp in sim.register.companies_registers:
     for i in range(len(sim.register.companies_registers[corp])):
         print(f"Value: {sim.register.companies_registers[corp].value[i]}")
         print(f"Action: {sim.register.companies_registers[corp].actions[i]}")
+
 

@@ -20,9 +20,11 @@ def is_goal(initial_node : Node, final_node : Node, increment = 1.1):
     final_node_value = final_node.get_node_value()
     
     
-    print("initial")
-    print(initial_node_value)
-    print("final")
-    print(final_node_value)
-    print("_________________")
+    #print("initial")
+    #print(initial_node_value)
+    #print("final")
+    #print(final_node_value)
+    #print(f"Action: {final_node.action}")
+    #print("_________________")
+    #input()
     return final_node_value/initial_node_value > increment
