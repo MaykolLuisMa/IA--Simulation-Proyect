@@ -1,6 +1,7 @@
 #dependencias
 from openai import OpenAI
 from nlp.prompt import *
+import json
 
 #respuesta del modelo a la query ingresada por el usuario
 def response(query: str) -> str:
@@ -16,4 +17,6 @@ def response(query: str) -> str:
     temperature=0.7,
   )
   
-  return completion.choices[0].message.content
+  json_result = completion.choices[0].message.content
+  result = json.loads(json_result)
+  return result['result']
