@@ -3,7 +3,7 @@ from Actions_result import expand_node
 from Node import Node, is_goal
 from Company import get_company_value, nothing
 from Posible_Actions import Action
-import numpy as np
+#import numpy as np
 
 def non_action(company,state):
     return Action(nothing,company,state,[])

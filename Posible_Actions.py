@@ -1,4 +1,4 @@
-from Company import Company, produce, buy, sell, build_factory
+from Company import Company, produce, buy, sell, build_factory, get_company_storage_limit
 from State import State
 from Product import AccountedProduct,ProductCollection,Product_in_sale, add_products
 from Factory import Factory, calculate_build_cost
@@ -23,9 +23,9 @@ def action_cost(company,past_state : State,new_state : State,action : Action):
 
 def determinate_posible_actions(company : Company, state : State):
     actions = []
-    actions += posible_factory_build(company,state)
+    #actions += posible_factory_build(company,state)
     #actions += posible_buys(company,state)
-    #actions += posible_sells(company, state)
+    actions += posible_sells(company, state)
     #actions += posible_produces(company,state)
     return actions
 
@@ -47,8 +47,7 @@ def posible_sells(company : Company, state : State):
 def posible_buys(company : Company, state):
     actions = []
     products = company.products.opponent()
-    for f in company.factories:
-        products = add_products(products,f.get_max_necessary())
+    products = add_products(products, get_company_storage_limit(company))
     for p in products:
         actions.append(Action(buy,company,state,[ProductCollection([p])]))
     return actions

@@ -1,5 +1,5 @@
 from Product import Product, Product_in_sale, AccountedProduct,ProductCollection
-from Company import Company,Seller,Buyer, Global_Company,get_company_value, build_factory
+from Company import Company,Seller,Buyer, Global_Company,get_company_value, build_factory, get_company_storage_limit
 from Market import Market
 from typing import List
 from Condition import Adaptation_5_porcent
@@ -15,7 +15,7 @@ factory_list = [Factory(1,"Abattoir(pork)",5000,200,1,10,
                     ProductCollection([AccountedProduct(product_list[0],1)])
                     ,[AccountedProduct(product_list[1],150)])
                     ]
-company_list = [Company(0,"White Spider",100000,ProductCollection([]),{},100)]
+company_list = [Company(0,"White Spider",100000,ProductCollection([AccountedProduct(product_list[1],1000)]),{factory_list[0]:1},100)]
 
 def products_generator(products : List[Product]):
     amounts = [random.randrange(0,1000) for p in products]
@@ -34,8 +34,11 @@ initial_state = State(company_list,market,factory_list,[],[],[Adaptation_5_porce
 
 inflationfactor = market.get_inflation_factor()
 
-
+#print([[p.product.name, p.amount] for p in get_company_storage_limit(company_list[0])])
 #build_factory(company_list[0],initial_state,factory_list[0])
+#print([[p.product.name, p.amount] for p in get_company_storage_limit(company_list[0])])
+#build_factory(company_list[0],initial_state,factory_list[0])
+#print([[p.product.name, p.amount] for p in get_company_storage_limit(company_list[0])])
 #print(f"Inflation {inflationfactor}")
 #print(F"Factories {company_list[0].factories}")
 #print(f"Company operation cost: {company_list[0].get_operation_cost(inflationfactor)}")

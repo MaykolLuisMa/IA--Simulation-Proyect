@@ -30,8 +30,8 @@ class Simulation:
                 node = Node(corp,self.state,None,None,0,0)
                 goal_node = astar_search(node)
                 next_node = get_next_node(node,goal_node)
-                print(next_node.action)
-                print([p for p in corp.products])
+                print(f"Action: {next_node.action}")
+                print(f"company products {[(p.product.name, p.amount) for p in corp.products]}")
                 
                 self.register.companies_registers[corp.id].actions.append(next_node.action)
                 actions.append(next_node.action)
@@ -39,8 +39,12 @@ class Simulation:
                 break
             for i in self.state.companies[0].factories.items():
                 print(f"Factoires {i}")
-            input()
+            for p in self.state.market.get_global_seller().in_sale:
+                print(f"Market sell product {p.product.name} {p.amount} ${p.price}")
+            for p in self.state.market.get_global_buyer().to_buy:
+                print(f"Market buyer product {p.product.name} {p.amount}")
             self.state = next_state(self.state,actions)
+            input()
 
     def print_products(self):
         print("___Dates___")

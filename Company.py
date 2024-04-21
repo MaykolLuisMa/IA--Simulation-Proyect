@@ -13,7 +13,7 @@ class Company:
         self.factories = factories
         self.staff_capacity = staff_capacity
         self.basic_operation_cost = basic_operation_cost
-    
+
     def is_global_company():
         return False
     
@@ -23,12 +23,17 @@ class Company:
         return cost
     
     def process_sell(self, product : Product_in_sale):
+        print("Process sell")
         self.products.extract(product,product.amount) 
-        self.coin += product.price
+        self.coin += product.get_total_price()
     
     def process_buy(self, product : Product_in_sale):
+        #print("Process buy")
+        #print(f"Current products: {[p.amount for p in self.products]}")
+        #print(f"Add amount {product.amount}")
         self.products.append(product.product,product.amount)
-        self.coin -= product.price
+        #print(f"New products: {[p.amount for p in self.products]}")
+        self.coin -= product.get_total_price()
     
     def confirm_buy(self, market, product : Product_in_sale) -> bool:
         self.process_buy(product)
@@ -83,13 +88,16 @@ class Global_Company(Company):
         global_seller = market.get_global_seller()
         global_price = global_seller.in_sale.get(product.product.id).price
         buy_price = product.price
-        porcent = utils.get_porcent(global_price,buy_price)
+        
+        porcent = buy_price/global_price
+        max_porcent = 0.90
         if porcent <= 1:
-            return True,product.amount
+            return True,int(product.amount*max_porcent)
         else:
-            buy_porcent = 1-(porcent-1)
+            buy_porcent = max_porcent-(porcent-1)
             to_buy = product.amount*buy_porcent
             return to_buy>0,to_buy 
+    
     def process_sell(self, product: Product_in_sale):
         pass
     def is_global_company(self):
@@ -105,11 +113,22 @@ def get_company_value(corp : Company, market):
     val += corp.staff_capacity*market.personal.basic_price*market.inflation_factor
     return val
 
+
+def get_company_storage_limit(company : Company, product = None):
+    products = ProductCollection([])
+    for f,i in company.factories.items():
+        products = add_products(products,f.get_max_necessary(i))
+    if product == None:
+        return products
+    return products.get(product.id)
 #______________________________________________________________________________
 def sell(company : Company, state, products : ProductCollection):
         state.market.add_seller(company, products)
 
 def buy(company, state, products : ProductCollection):
+        for p in get_company_storage_limit(company):
+            products.get(p.product.id).amount = min(products.get(p.product.id).amount, p.amount)
+        #print(f"add buyer {[p.amount for p in products]}")
         state.market.add_buyer(company, products)
 
 def build_factory(company : Company,state, factory : Factory):
