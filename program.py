@@ -10,7 +10,7 @@ from Node import Node
 from Graph_Search_Algorhitms import astar_search, get_next_node
 from Posible_Actions import Action
 from Initial_State import initial_state
-
+from Algorithms import get_company_action
 class Simulation:
     def __init__(self, inicial_state : State):
         self.state = inicial_state
@@ -27,14 +27,13 @@ class Simulation:
                 print(f"company value: {get_company_value(corp,self.state.market)}")
                 print(f"company coin {corp.coin}")
                 self.register.companies_registers[corp.id].value.append(get_company_value(corp,self.state.market))
-                node = Node(corp,self.state,None,None,0,0)
-                goal_node = astar_search(node)
-                next_node = get_next_node(node,goal_node)
-                print(f"Action: {next_node.action}")
+                
+                action = get_company_action(corp,self.state)
+                print(f"Action: {action}")
                 print(f"company products {[(p.product.name, p.amount) for p in corp.products]}")
                 
-                self.register.companies_registers[corp.id].actions.append(next_node.action)
-                actions.append(next_node.action)
+                self.register.companies_registers[corp.id].actions.append(action)
+                actions.append(action)
             if len(self.state.companies.values()) == 0:
                 break
             for i in self.state.companies[0].factories.items():
@@ -72,8 +71,3 @@ for corp in sim.register.companies_registers:
         print(f"Value: {sim.register.companies_registers[corp].value[i]}")
         print(f"Action: {sim.register.companies_registers[corp].actions[i]}")
 
-
-def a_star_algorithm(company, state):
-    node = Node(self,self.state,None,None,0,0)
-    goal_node = astar_search(node)
-    next_node = get_next_node(node,goal_node)

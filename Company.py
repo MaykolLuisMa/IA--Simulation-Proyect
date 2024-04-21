@@ -64,11 +64,10 @@ class Company:
     def evaluate_loan(self,loan) -> bool:
         pass
 
-    
-
     def upgrade_staff_capacity(self,personal : Personal):
         self.add_products([-(personal.basic_price*math.pow(self.staff_capacity+1,2))])
         self.staff_capacity += 0.1
+    
     
 class Seller:
     def __init__(self, company : Company, in_sale : ProductCollection):
@@ -81,8 +80,8 @@ class Buyer:
         self.to_buy = to_buy
 
 class Global_Company(Company):
-    def __init__(self, id = -1, name = "Global Company", coin = 0, products = [], factories = {}, staff_capacity=1):
-        super().__init__(id, name, coin, products, factories, staff_capacity)
+    def __init__(self, id = -1, name = "Global Company", coin = 0, products = [], factories = {},algorithm = None, staff_capacity=1):
+        super().__init__(id, name, coin, products, factories, algorithm, staff_capacity)
     
     def confirm_buy(self, market, product: Product_in_sale) -> bool:
         #print("Process sell global company method")
