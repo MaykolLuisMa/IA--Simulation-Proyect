@@ -64,7 +64,7 @@ def posible_produces_by_factory(company : Company,state,disponible_products : Pr
     if alpha == 0:
         return []
     actions = []
-    for i in range(alpha):
+    for i in range(1,alpha):
         necesary_products = ProductCollection([AccountedProduct(p.product,p.amount*i) for p in factory[0].necessary_products])
         actions.append(Action(produce, company,state,[necesary_products,(factory[0],i)]))
     return actions
