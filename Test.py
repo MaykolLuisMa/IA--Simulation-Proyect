@@ -1,6 +1,6 @@
 from Product import Product, Product_in_sale, AccountedProduct
 from Company import Company,Seller,Buyer, Global_Company
-from Market import market
+from Market import Market
 from typing import List
 from program import Simulation
 from Condition import Adaptation_5_porcent
@@ -19,6 +19,7 @@ products = get_product_list()
 global_seller = Seller(Global_Company(),products_in_sale_generator(products))
 global_buyer = Buyer(Global_Company(),products_to_buy_generator(products))
 company = Company(0,"White Spider",10000,products_to_buy_generator(products),[],10)
-market = market(global_seller,global_buyer)
-sim = Simulation([],market,[],[],[],[Adaptation_5_porcent()])
+Market = Market(global_seller,global_buyer)
+sim = Simulation([],Market,[],[],[],[Adaptation_5_porcent()])
 sim.ejecution()
+
