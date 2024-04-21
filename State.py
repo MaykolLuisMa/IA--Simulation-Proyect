@@ -6,21 +6,34 @@ from Condition import Condition
 from typing import List,Tuple
 from copy import deepcopy
 from Product import ProductCollection
+from Factory import Factory
 class State:
-    def __init__(self, companies : List[Company], market : Market, factories, agreements : List[Agreement],loans : List[Loan], conditions : List[Condition]):
+    def __init__(self, companies : List[Company], market : Market, factories : List[Factory], agreements : List[Agreement],loans : List[Loan], conditions : List[Condition]):
         self.companies = {corp.id:corp for corp in companies}
         self.market = market
         self.factories = factories
         self.agreements = agreements
         self.loans = loans
         self.conditions = conditions
-    
-
+    def get_best_potential_factory(self):
+        ganance = 0
+        factory = None
+        for fact in self.factories:
+            inversion = 0
+            result = 0
+            for p in fact.necessary_products:
+                inversion += p.amount*p.product.basic_price
+            for p in fact.produced_products:
+                result += p.amount*p.product.basic_price
+            if result-inversion>ganance:
+                ganance = result-inversion
+                factory = fact
+        return factory,ganance
 def next_state(state : State,company_actions : List):
         compute_agreements(state)
         compute_loans(state)
-        compute_operation_cost(state)
         compute_company_actions(state, company_actions)
+        compute_operation_cost(state)
         state.market.ejecute_iteration(state.conditions)
         return state
 
@@ -41,9 +54,14 @@ def compute_loans(state : State):
 
 def compute_operation_cost(state : State):
     inflation_factor = state.market.get_inflation_factor()
+    to_delete = []
     for corp in state.companies.values():
-        cost = corp.get_operation_cost(state.market.personal,inflation_factor)
-        corp.add_products(ProductCollection([],-cost))
+        cost = corp.get_operation_cost(inflation_factor)
+        is_soportable = corp.add_products(ProductCollection([],-cost))
+        if is_soportable == False:
+            to_delete.append(corp.id)            
+    for id in to_delete:
+        state.companies.pop(id,None)
 
 def compute_company_actions(state : State, company_action : List):
     for act in company_action:

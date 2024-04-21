@@ -1,4 +1,4 @@
-import numpy as np
+#import numpy as np
 import math
 import heapq
 from typing import List
@@ -16,7 +16,8 @@ def random_up(value : int, porcent = 0.05):
 def random_down(value : int, porcent = 0.05):
     low = int(value * (1 - porcent))
     low = max(0,low)
-    return np.random.randint(low,value)
+    return value
+    #return np.random.randint(low,value)
 
 def get_porcent(total,part):
     return part/total

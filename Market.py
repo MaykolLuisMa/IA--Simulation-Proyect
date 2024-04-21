@@ -18,6 +18,7 @@ class Market:
         self.sellers.append(Seller(company,in_sale))
 
     def add_buyer(self,company : Company, to_buy : ProductCollection):
+        #print(f"To buy: {to_buy}")
         self.buyers.append(Buyer(company,to_buy)) 
 
     def get_inflation_factor(self):
@@ -50,6 +51,8 @@ class Market:
         for s in self.buyers:
             for pis in s.to_buy:
                 products_to_buy[pis.product.id].append([pis,s.company])
+        #for i in products_to_buy:
+            #print(f"Num of buyers {len(products_to_buy[i])}")
         return products_to_buy
     
     def get_past_seller_dates(self):
@@ -85,7 +88,7 @@ class Market:
         for p in global_seller.in_sale:
             demand = global_buyer.to_buy.get(p.product.id).amount,to_buy_dates.get(p.product.id).amount
             offert = global_seller.in_sale.get(p.product.id).amount,in_sale_dates[p.product.id].amount
-            price = in_sale_dates[p.product.id].price * (to_buy_dates[p.product.id].amount/in_sale_dates[p.product.id].amount)
+            price = in_sale_dates[p.product.id].price * (to_buy_dates[p.product.id].amount/max(1,in_sale_dates[p.product.id].amount))
             product = global_seller.in_sale.get(p.product.id).product
             market_products_dates.append(market_Product_Dates(product,price,offert,demand))
         return market_products_dates
@@ -94,30 +97,33 @@ class Market:
                              psellers : List[Tuple[Product_in_sale,Company]],
                              pbuyers : List[Tuple[AccountedProduct,Company]]):
         for i in range(len(pbuyers)):
-            #minimum that we can sell:
-            if(len(psellers)):
+            if(len(psellers) == 0):
                 break
-            selled = min(psellers[0][0].amount,pbuyers[i][0].amount)
-            buy_confirmation, selled = pbuyers[i][1].confirm_buy(self,Product_in_sale(psellers[0][0].product,psellers[0][0].price,selled))
+
+            to_selled = min(psellers[0][0].amount, pbuyers[i][0].amount)
+
+            buy_confirmation, to_selled = pbuyers[i][1].confirm_buy(self,Product_in_sale(psellers[0][0].product,psellers[0][0].price,to_selled))
             if  buy_confirmation == False:
                 continue
-            psellers[0][1].process_sell(Product_in_sale(psellers[0][0].product,psellers[0][0].price,selled))
+            psellers[0][1].process_sell(Product_in_sale(psellers[0][0].product,psellers[0][0].price,to_selled))
             
-            if selled == psellers[0][0].amount:
+            if to_selled == psellers[0][0].amount:
                 psellers.remove(psellers[0])
-                pbuyers[i][0].amount -= selled
+                pbuyers[i][0].amount -= to_selled
                 i -= 1
             else:
-                psellers[0][0].amount -= selled
+                psellers[0][0].amount -= to_selled
                 
     def compute_all_buys(self):
         accounted_product = self.order_buyers_by_product()
         product_in_sale = self.order_sellers_by_product()
         for p in accounted_product:
+            #print(f"{p} accounted product {len(accounted_product[p])}")
             self.compute_product_buy(p,product_in_sale[p],accounted_product[p])
         
     def ejecute_iteration(self, conditions : List[Condition]):
         market_products_dates = self.get_market_products_dates()
+        #print("ejecute iteration")
         self.compute_all_buys()
         self.set_global_market(market_products_dates,conditions)
         self.inflation_factor = self.get_inflation_factor()
@@ -126,7 +132,6 @@ class Market:
         compute_condition(market_products_dates,conditions)
         in_sale = []
         to_buy = [] 
-        
         for p in market_products_dates:
             in_sale.append(Product_in_sale(p.product,normal_variation(p.price),p.external_market_offert))
             to_buy.append(AccountedProduct(p.product,p.external_market_demand))
@@ -140,11 +145,10 @@ def set_global_in_sale(products : List[Product_in_sale], conditions : List[Condi
 
 def buyer_sort(buyers : List[Buyer]) -> List[Buyer]:
     sorted_buyers = []
-    copied_buyers = deepcopy(buyers)
     for i in range(len(buyers)):
-        total = sum([buyer.company.staff_capacity for buyer in copied_buyers])
-        capacities = [buyer.company.staff_capacity/total for buyer in copied_buyers]
-        buyer = random.choices(copied_buyers,capacities,k=1)[0]
+        total = sum([buyer.company.staff_capacity for buyer in buyers])
+        capacities = [buyer.company.staff_capacity/total for buyer in buyers]
+        buyer = random.choices(buyers,capacities,k=1)[0]
         sorted_buyers.append(buyer)
-        copied_buyers.remove(buyer)
+        buyers.remove(buyer)
     return sorted_buyers
