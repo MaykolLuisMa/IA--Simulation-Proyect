@@ -19,6 +19,8 @@ class AccountedProduct:
         return AccountedProduct(self.product, self.amount + other.amount)
     
     def __eq__(self, other: object) -> bool:
+        if other == None:
+            return False
         return self.product == other.product 
     
     def __sub__(self, other):
@@ -72,7 +74,7 @@ class ProductCollection:
     
     def extract(self, product : Product,amount):
         if product == None:
-            self.coin += amount
+            self.coin -= amount
             return
         self.col[product.id].amount -= amount
     

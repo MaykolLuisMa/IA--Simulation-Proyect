@@ -34,6 +34,11 @@ def next_state(state : State,company_actions : List):
         compute_loans(state)
         compute_company_actions(state, company_actions)
         compute_operation_cost(state)
+        for s in state.market.sellers:
+            #int(f"{s.company.is_global_company()}")
+            for p in s.in_sale:
+                #print(f"products: {p.product}")
+                pass
         state.market.ejecute_iteration(state.conditions)
         return state
 

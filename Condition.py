@@ -25,10 +25,10 @@ class Hyerinflation(Condition):
     def __init__(self):
         self.is_active = False
         self.iteration = 0
-        self.porcent = np.random.choice([self.brazil_dates(),self.venezuela_dates()])
-    def is_occurred(self):
-        if not self.is_active:
-            self.is_active = np.random.randint(0,100) == 0
+#        self.porcent = np.random.choice([self.brazil_dates(),self.venezuela_dates()])
+#    def is_occurred(self):
+#        if not self.is_active:
+#            self.is_active = np.random.randint(0,100) == 0
 
     def brazil_dates(self):
         porcent = [12.0, 14.1, 15.0, 20.1, 27.6, 25.9, 9.3, 4.5, 8.0, 11.2, 14.5, 15.9, 

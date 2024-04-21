@@ -31,9 +31,12 @@ class Market:
         for s in self.sellers:
             for pis in s.in_sale:
                 products_in_sale[pis.product.id].append([pis,s.company])
+        for p in products_in_sale:
+            products_in_sale[p].reverse()
+            
         for i in products_in_sale:
             products_in_sale[i]
-            sorted(products_in_sale[i],key=lambda item : -item[0].price)
+            products_in_sale[i] = sorted(products_in_sale[i],key=lambda item : -item[0].price)
         return products_in_sale
     
     def get_global_seller(self):
@@ -96,6 +99,7 @@ class Market:
     def compute_product_buy(self,product_id : int,
                              psellers : List[Tuple[Product_in_sale,Company]],
                              pbuyers : List[Tuple[AccountedProduct,Company]]):
+        #print("Compute buy")
         for i in range(len(pbuyers)):
             if(len(psellers) == 0):
                 break
@@ -105,6 +109,7 @@ class Market:
             buy_confirmation, to_selled = pbuyers[i][1].confirm_buy(self,Product_in_sale(psellers[0][0].product,psellers[0][0].price,to_selled))
             if  buy_confirmation == False:
                 continue
+            #print(f"Sellers number: {len(psellers)}")
             psellers[0][1].process_sell(Product_in_sale(psellers[0][0].product,psellers[0][0].price,to_selled))
             
             if to_selled == psellers[0][0].amount:

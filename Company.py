@@ -5,7 +5,7 @@ from Loan import Loan
 import math
 import utils
 class Company:
-    def __init__(self, id : int, name : str, coin : float, products : ProductCollection, factories : Dict, basic_operation_cost : float, staff_capacity = 1):
+    def __init__(self, id : int, name : str, coin : float, products : ProductCollection, factories : Dict, basic_operation_cost : float,algorithm, staff_capacity = 1):
         self.id = id
         self.name = name
         self.coin = coin
@@ -13,8 +13,8 @@ class Company:
         self.factories = factories
         self.staff_capacity = staff_capacity
         self.basic_operation_cost = basic_operation_cost
-
-    def is_global_company():
+        self.algorthm = algorithm
+    def is_global_company(self):
         return False
     
     def get_operation_cost(self,inflation_factor):
@@ -23,8 +23,8 @@ class Company:
         return cost
     
     def process_sell(self, product : Product_in_sale):
-        print("Process sell")
-        self.products.extract(product,product.amount) 
+        #print("Process sell company method")
+        self.products.extract(product.product,product.amount) 
         self.coin += product.get_total_price()
     
     def process_buy(self, product : Product_in_sale):
@@ -85,6 +85,7 @@ class Global_Company(Company):
         super().__init__(id, name, coin, products, factories, staff_capacity)
     
     def confirm_buy(self, market, product: Product_in_sale) -> bool:
+        #print("Process sell global company method")
         global_seller = market.get_global_seller()
         global_price = global_seller.in_sale.get(product.product.id).price
         buy_price = product.price
@@ -102,8 +103,6 @@ class Global_Company(Company):
         pass
     def is_global_company(self):
         return True
-    
-
 
 def get_company_value(corp : Company, market):
     val = 0
@@ -149,10 +148,12 @@ def pay_loan_indemnization(company : Company, loan : Loan):
             if company.factories[f] == 0:
                 company.factories.pop(f)
 
-def produce(self : Company,state ,products : ProductCollection, factory : Tuple[Factory,int]):
+def produce(company : Company,state ,products : ProductCollection, factory : Tuple[Factory,int]):
+        print(f"disponible {[p.amount for p in products]}")
         necesary, produced = produce_for_all_factories(products,factory)
-        self.add_products(necesary)
-        self.add_products(produced)
+        print(f"necesary {[p.amount for p in necesary]}")
+        company.add_products(necesary)
+        company.add_products(produced)
 
 def propose_agreement(company1, state, company2, agreement):
         if company1.evaluate_agreement(agreement):

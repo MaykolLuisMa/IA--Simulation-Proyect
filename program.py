@@ -73,3 +73,7 @@ for corp in sim.register.companies_registers:
         print(f"Action: {sim.register.companies_registers[corp].actions[i]}")
 
 
+def a_star_algorithm(company, state):
+    node = Node(self,self.state,None,None,0,0)
+    goal_node = astar_search(node)
+    next_node = get_next_node(node,goal_node)
