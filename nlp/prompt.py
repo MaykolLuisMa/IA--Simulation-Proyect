@@ -1,5 +1,5 @@
 #comportamiento del modelo
-SYSTEM_PROMPT = "Eres un asistente que responde preguntas sobre sexo"
+SYSTEM_PROMPT = "Eres un asistente que recibe un texto y responde a peticiones relacionado con el mismo"
 
 #prompt generado con la query del usuario
 def build_prompt(query: str):
