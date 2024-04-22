@@ -17,7 +17,7 @@ class Simulation:
         self.last_iteration_dates = []
         self.register = Register(self.state.companies.values())
 
-    def ejecution(self,duration_limit = 100):
+    def ejecution(self,duration_limit = 1000):
         for i in range(duration_limit):
             inflation_factor = self.state.market.get_inflation_factor()
             self.register.inflation.append(inflation_factor)
@@ -43,7 +43,7 @@ class Simulation:
             for p in self.state.market.get_global_buyer().to_buy:
                 print(f"Market buyer product {p.product.name} {p.amount}")
             self.state = next_state(self.state,actions)
-            input()
+            #input()
 
     def print_products(self):
         print("___Dates___")

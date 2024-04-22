@@ -148,9 +148,9 @@ def pay_loan_indemnization(company : Company, loan : Loan):
                 company.factories.pop(f)
 
 def produce(company : Company,state ,products : ProductCollection, factory : Tuple[Factory,int]):
-        print(f"disponible {[p.amount for p in products]}")
+        #print(f"disponible {[p.amount for p in products]}")
         necesary, produced = produce_for_all_factories(products,factory)
-        print(f"necesary {[p.amount for p in necesary]}")
+        #print(f"necesary {[p.amount for p in necesary]}")
         company.add_products(necesary)
         company.add_products(produced)
 

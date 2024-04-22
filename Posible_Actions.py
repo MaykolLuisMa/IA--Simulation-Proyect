@@ -23,10 +23,10 @@ def action_cost(company,past_state : State,new_state : State,action : Action):
 
 def determinate_posible_actions(company : Company, state : State):
     actions = []
-    #actions += posible_factory_build(company,state)
-    #actions += posible_buys(company,state)
+    actions += posible_factory_build(company,state)
+    actions += posible_buys(company,state)
     actions += posible_sells(company, state)
-    #actions += posible_produces(company,state)
+    actions += posible_produces(company,state)
     return actions
 
 def posible_factory_build(company : Company, state : State):
