@@ -4,7 +4,7 @@ from Node import Node, is_goal
 from Company import get_company_value, nothing
 from Posible_Actions import Action
 #import numpy as np
-
+import random
 def non_action(company,state):
     return Action(nothing,company,state,[])
 
@@ -17,11 +17,12 @@ def best_first_tree_search(inicial_node : Node,increment, f):
         if is_goal(inicial_node,node,increment):
             return node
         for child in expand_node(node):
-            return child
             frontier.add(child)
-    
+        index = random.randrange(0,len(frontier.items))
+        return frontier.items[index][1]
     non = non_action(last.company,last.state)
     return Node(last.company,last.state,inicial_node,non,0,0)
+
 def get_next_node(current_node : Node, goal_node : Node):
      if goal_node.parent == current_node:
         return goal_node

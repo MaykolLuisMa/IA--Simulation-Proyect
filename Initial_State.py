@@ -7,7 +7,7 @@ from State import State
 from Factory import Factory
 import utils
 import random
-
+from Algorithms import a_star_algorithm
 
 product_list = [Product(0,"porc","food",2000),Product(1,"swine meat","food",15)]#,Product(1,"chicken","food"),Product(1,"pork","food"),Product(1,"shrims","food")]
 
@@ -15,7 +15,7 @@ factory_list = [Factory(1,"Abattoir(pork)",5000,200,1,10,
                     ProductCollection([AccountedProduct(product_list[0],1)])
                     ,[AccountedProduct(product_list[1],150)])
                     ]
-company_list = [Company(0,"White Spider",100000,ProductCollection([AccountedProduct(product_list[0],1000)]),{factory_list[0]:1},100)]
+company_list = [Company(0,"White Spider",100000,ProductCollection([AccountedProduct(product_list[0],1000),AccountedProduct(product_list[0],5000)]),{factory_list[0]:1},100,a_star_algorithm)]
 
 def products_generator(products : List[Product]):
     amounts = [random.randrange(0,1000) for p in products]
