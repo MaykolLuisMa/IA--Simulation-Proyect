@@ -34,6 +34,7 @@ initial_state = State(company_list,market,factory_list,[],[],[Adaptation_5_porce
 
 inflationfactor = market.get_inflation_factor()
 
+
 #print([[p.product.name, p.amount] for p in get_company_storage_limit(company_list[0])])
 #build_factory(company_list[0],initial_state,factory_list[0])
 #print([[p.product.name, p.amount] for p in get_company_storage_limit(company_list[0])])

@@ -11,13 +11,14 @@ from Graph_Search_Algorhitms import astar_search, get_next_node
 from Posible_Actions import Action
 from Initial_State import initial_state
 from Algorithms import get_company_action
+from Inform_Builder import build_informs
 class Simulation:
     def __init__(self, inicial_state : State):
         self.state = inicial_state
         self.last_iteration_dates = []
         self.register = Register(self.state.companies.values())
 
-    def ejecution(self,duration_limit = 1000):
+    def ejecution(self,duration_limit = 10):
         for i in range(duration_limit):
             inflation_factor = self.state.market.get_inflation_factor()
             self.register.inflation.append(inflation_factor)
@@ -66,8 +67,6 @@ class Simulation:
 
 sim = Simulation(initial_state)
 sim.ejecution()
-for corp in sim.register.companies_registers:
-    for i in range(len(sim.register.companies_registers[corp])):
-        print(f"Value: {sim.register.companies_registers[corp].value[i]}")
-        print(f"Action: {sim.register.companies_registers[corp].actions[i]}")
-
+print("_____________________________________________________________________")
+print("Informe:")
+print(build_informs(sim.register))
