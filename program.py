@@ -12,6 +12,7 @@ from Posible_Actions import Action
 from Initial_State import initial_state
 from Algorithms import get_company_action
 from Inform_Builder import build_informs
+import os
 class Simulation:
     def __init__(self, inicial_state : State):
         self.state = inicial_state
@@ -63,10 +64,9 @@ class Simulation:
             print("_____")
         print("_____________________________________________")
     
-
-
 sim = Simulation(initial_state)
 sim.ejecution()
-print("_____________________________________________________________________")
-print("Informe:")
-print(build_informs(sim.register))
+print('')
+input('Press "enter" to continue...')
+os.system('clear')
+INFORM = build_informs(sim.register)
