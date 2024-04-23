@@ -2,7 +2,7 @@ from Product import Product, Product_in_sale, AccountedProduct
 from Company import Company,Seller,Buyer, Global_Company
 from Market import Market
 from typing import List
-from program import Simulation
+from main import Simulation
 from Condition import Adaptation_5_porcent
 import random
 from Algorithms import a_star_algorithm
