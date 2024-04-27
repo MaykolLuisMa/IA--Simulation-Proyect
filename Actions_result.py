@@ -6,7 +6,7 @@ import Posible_Actions
 from copy import deepcopy
 def action_result(action : Action):
     action.state = next_state(action.state,[action])
-    print(f"valid{action.company.id in action.state.companies}")
+    #print(f"valid{action.company.id in action.state.companies}")
     return action.company, action.state
 
 def expand_node(node_to_expand : Node):

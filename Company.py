@@ -105,6 +105,12 @@ class Global_Company(Company):
     def is_global_company(self):
         return True
 
+
+def can_used(company : Company, product):
+    for fact in company.factories:
+        if product.id in [p.product.id for p in fact.necessary_products]:
+            return True
+    return False      
 def get_company_value(corp : Company, market):
     val = 0
     val += corp.coin/market.get_inflation_factor()
