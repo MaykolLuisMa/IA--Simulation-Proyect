@@ -41,13 +41,14 @@ class Product_in_sale(AccountedProduct):
         return Product_in_sale(self.product,self.price,self.amount-other.amount)
 
 class market_Product_Dates:
-    def __init__(self, product : Product, price : float, offert : Tuple[int,int], demand : Tuple[int,int]):
+    def __init__(self, product : Product,external_market_price: float, general_price,external_market_offert,general_offert,external_market_demand,general_demand):
         self.product = product
-        self.price = price
-        self.external_market_offert = offert[0]
-        self.general_offert = offert[1]
-        self.external_market_demand = demand[0]
-        self.general_demand = demand[1]
+        self.external_market_price = external_market_price
+        self.general_price = general_price
+        self.external_market_offert = external_market_offert
+        self.general_offert = general_offert
+        self.external_market_demand = external_market_demand
+        self.general_demand = general_demand
 
 
 class ProductCollection:
@@ -84,6 +85,8 @@ class ProductCollection:
         return all([p.amount >= 0 for p in self])
     
     def get(self, product_id):
+        if product_id not in self.col.keys():
+            return None
         return self.col[product_id]
     
     def opponent(self):

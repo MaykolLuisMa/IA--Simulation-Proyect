@@ -1,4 +1,4 @@
-#import numpy as np
+import random
 import math
 import heapq
 from typing import List
@@ -6,25 +6,43 @@ def normal_variation(value : float, variation = 0.03):
     return value
     return np.random.normal(value, value*variation, None)
 
+def uniform_variation(low, high):
+    return random.uniform(low,high)
+
 def random_up(value : int, porcent = 0.05):
-    return value
     high = int(value * (1 + porcent))
     if value == high:
         return value
-    return np.random.randint(value,high)
+    return random.uniform(value,high)
 
 def random_down(value : int, porcent = 0.05):
     low = int(value * (1 - porcent))
     low = max(0,low)
-    return value
-    #return np.random.randint(low,value)
+    return random.uniform(low,value)
 
+def adjust_value(current_value, posible_new_value,variaton_limit = 0.15):
+    up = (1+variaton_limit)*current_value
+    down = (1-variaton_limit)*current_value
+
+    if current_value == posible_new_value:
+        return current_value
+    elif current_value < posible_new_value:
+        if posible_new_value <= up:
+            return posible_new_value
+        else:
+            return random_up(current_value,variaton_limit)
+    elif current_value > posible_new_value:
+        if posible_new_value >= down:
+            return posible_new_value
+        else:
+            return random_down(current_value,variaton_limit)
 def get_porcent(total,part):
     return part/total
 
 def normalize_price(price, price_reference, current_price):
     porcent = get_porcent(price_reference,current_price)
     return price/porcent
+
 
 class PriorityQueue:
     def __init__(self, items=(), key=lambda x: x): 

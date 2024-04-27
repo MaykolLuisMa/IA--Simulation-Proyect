@@ -3,9 +3,10 @@ from Company import Company ,Seller, Buyer, Global_Company
 from Product import Personal, Product_in_sale, AccountedProduct , market_Product_Dates, ProductCollection
 from Condition import Condition, compute_condition
 from copy import deepcopy
-from utils import normal_variation, normalize_price
+from utils import normal_variation, normalize_price, adjust_value
 import random
 
+VARIATION_PRICE_LIMIT = 1.20
 class Market:
     def __init__(self, global_seller : Seller, global_buyer : Buyer,product_list):
         self.sellers = [global_seller]
@@ -62,14 +63,13 @@ class Market:
         """
         get price average and total of seller of every product
         """
-        products_in_sale = {p.id:[Product_in_sale(p,0,0),0,0] for p in self.products}
+        products_in_sale = {p.id:[Product_in_sale(p,0,0),0] for p in self.products}
         for s in self.sellers:
             for pis in s.in_sale:
                 products_in_sale[pis.product.id][0].amount += pis.amount
-                products_in_sale[pis.product.id][1] += pis.price
-                products_in_sale[pis.product.id][2] += 1
+                products_in_sale[pis.product.id][1] += pis.price*pis.amount
         for p in products_in_sale:
-            products_in_sale[p][0].price = products_in_sale[p][1]/products_in_sale[p][2]
+            products_in_sale[p][0].price = products_in_sale[p][1]/products_in_sale[p][0].amount
         return {i:l[0] for i,l in products_in_sale.items()}
     
     def get_past_buyer_dates(self):
@@ -89,11 +89,18 @@ class Market:
         global_buyer = deepcopy(self.get_global_buyer())
         market_products_dates = []
         for p in global_seller.in_sale:
-            demand = global_buyer.to_buy.get(p.product.id).amount,to_buy_dates.get(p.product.id).amount
-            offert = global_seller.in_sale.get(p.product.id).amount,in_sale_dates[p.product.id].amount
-            price = in_sale_dates[p.product.id].price * (to_buy_dates[p.product.id].amount/max(1,in_sale_dates[p.product.id].amount))
+            global_market_demand = global_buyer.to_buy.get(p.product.id).amount
+            general_demand = to_buy_dates.get(p.product.id).amount
+            global_market_offert = global_seller.in_sale.get(p.product.id).amount
+            general_offert = in_sale_dates[p.product.id].amount
+            general_price = in_sale_dates[p.product.id].price
+            global_market_price = global_seller.in_sale.get(p.product.id).price
+
             product = global_seller.in_sale.get(p.product.id).product
-            market_products_dates.append(market_Product_Dates(product,price,offert,demand))
+            market_products_dates.append(market_Product_Dates(product,global_market_price,
+                                                              general_price,global_market_offert,
+                                                              general_offert,global_market_demand,
+                                                              general_demand))
         return market_products_dates
 
     def compute_product_buy(self,product_id : int,
@@ -103,15 +110,12 @@ class Market:
         for i in range(len(pbuyers)):
             if(len(psellers) == 0):
                 break
-
             to_selled = min(psellers[0][0].amount, pbuyers[i][0].amount)
-
             buy_confirmation, to_selled = pbuyers[i][1].confirm_buy(self,Product_in_sale(psellers[0][0].product,psellers[0][0].price,to_selled))
             if  buy_confirmation == False:
                 continue
             #print(f"Sellers number: {len(psellers)}")
             psellers[0][1].process_sell(Product_in_sale(psellers[0][0].product,psellers[0][0].price,to_selled))
-            
             if to_selled == psellers[0][0].amount:
                 psellers.remove(psellers[0])
                 pbuyers[i][0].amount -= to_selled
@@ -138,7 +142,8 @@ class Market:
         in_sale = []
         to_buy = [] 
         for p in market_products_dates:
-            in_sale.append(Product_in_sale(p.product,normal_variation(p.price),p.external_market_offert))
+            price = adjust_value(p.external_market_price, p.general_price)
+            in_sale.append(Product_in_sale(p.product,price,p.external_market_offert))
             to_buy.append(AccountedProduct(p.product,p.external_market_demand))
         self.buyers = [Buyer(Global_Company(), ProductCollection(to_buy))]
         self.sellers = [Seller(Global_Company(),ProductCollection(in_sale))]
