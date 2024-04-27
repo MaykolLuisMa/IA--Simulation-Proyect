@@ -111,6 +111,11 @@ def can_used(company : Company, product):
         if product.id in [p.product.id for p in fact.necessary_products]:
             return True
     return False      
+def can_produce(company : Company, product):
+    for fact in company.factories:
+        if product.id in  [p.product.id for p in fact.produced_products]
+            return True
+    return False
 def get_company_value(corp : Company, market):
     val = 0
     val += corp.coin/market.get_inflation_factor()
@@ -171,9 +176,9 @@ def produce(company : Company,state ,products : ProductCollection, factory : Tup
         for p in produced:
             p.amount = min(p.amount,free_space.get(p.product.id).amount)
         #print(f"necesary {[p.amount for p in necesary]}")
-        company.add_products(necesary)
-        company.add_products(produced)
-
+        nec = company.add_products(necesary)
+        prod = company.add_products(produced)
+        return nec and prod
 def propose_agreement(company1, state, company2, agreement):
         if company1.evaluate_agreement(agreement):
             state.agreements.append(agreement)
