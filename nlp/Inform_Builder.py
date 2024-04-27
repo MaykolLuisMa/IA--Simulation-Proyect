@@ -1,8 +1,8 @@
-from Register import Register
-from Initial_State import company_list, factory_list, product_list
+from nlp.Register import Register
+from simulation.Initial_State import company_list, factory_list, product_list
 from typing import List
-from Company import build_factory, produce, buy, sell
-from Posible_Actions import Action
+from simulation.Company import build_factory, produce, buy, sell
+from search.Posible_Actions import Action
 
 def action_dictionary(action : Action):
     if action.f == build_factory:

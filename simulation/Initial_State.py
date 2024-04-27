@@ -1,10 +1,10 @@
-from Product import Product, Product_in_sale, AccountedProduct,ProductCollection
-from Company import Company,Seller,Buyer, Global_Company,get_company_value, build_factory, get_company_storage_limit
-from Market import Market
+from simulation.Product import Product, Product_in_sale, AccountedProduct,ProductCollection
+from simulation.Company import Company,Seller,Buyer, Global_Company,get_company_value, build_factory, get_company_storage_limit
+from simulation.Market import Market
 from typing import List
-from Condition import Adaptation_5_porcent
-from State import State
-from Factory import Factory
+from simulation.Condition import Adaptation_5_porcent
+from simulation.State import State
+from simulation.Factory import Factory
 import utils
 import random
 from Algorithms import uniform_cost_search_algorithm, random_algorithm

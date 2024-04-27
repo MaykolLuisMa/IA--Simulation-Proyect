@@ -1,7 +1,7 @@
-from Company import Company, produce, buy, sell, build_factory, get_company_storage_limit
-from State import State
-from Product import AccountedProduct,ProductCollection,Product_in_sale, add_products
-from Factory import Factory, calculate_build_cost
+from simulation.Company import Company, produce, buy, sell, build_factory, get_company_storage_limit
+from simulation.State import State
+from simulation.Product import AccountedProduct,ProductCollection,Product_in_sale, add_products
+from simulation.Factory import Factory, calculate_build_cost
 from typing import List
 from copy import deepcopy
 class Action:

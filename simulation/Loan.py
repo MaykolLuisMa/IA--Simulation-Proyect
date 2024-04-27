@@ -1,4 +1,4 @@
-from Factory import Factory
+from simulation.Factory import Factory
 from typing import Dict
 class Loan:
     def __init__(self, bank, client, coin, interest, duration_limit, guarantee : Dict[Factory,int]):
