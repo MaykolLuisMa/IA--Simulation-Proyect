@@ -7,7 +7,7 @@ from Condition import Condition
 from State import State, next_state
 from Register import Register
 from Node import Node
-from Graph_Search_Algorhitms import astar_search, get_next_node
+from Graph_Search_Algorhitms import get_next_node
 from Posible_Actions import Action
 from Initial_State import initial_state
 from Algorithms import get_company_action
@@ -18,7 +18,7 @@ class Simulation:
         self.last_iteration_dates = []
         self.register = Register(self.state.companies.values())
 
-    def ejecution(self,duration_limit = 10):
+    def ejecution(self,duration_limit = 100):
         for i in range(duration_limit):
             inflation_factor = self.state.market.get_inflation_factor()
             self.register.inflation.append(inflation_factor)
@@ -44,7 +44,7 @@ class Simulation:
             for p in self.state.market.get_global_buyer().to_buy:
                 print(f"Market buyer product {p.product.name} {p.amount}")
             self.state = next_state(self.state,actions)
-            #input()
+            input()
 
     def print_products(self):
         print("___Dates___")

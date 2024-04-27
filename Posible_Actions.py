@@ -3,6 +3,7 @@ from State import State
 from Product import AccountedProduct,ProductCollection,Product_in_sale, add_products
 from Factory import Factory, calculate_build_cost
 from typing import List
+from copy import deepcopy
 class Action:
     def __init__(self, f, company, state,args : List) -> None:
         self.f = f
@@ -27,7 +28,7 @@ def determinate_posible_actions(company : Company, state : State):
     actions += posible_buys(company,state)
     actions += posible_sells(company, state)
     actions += posible_produces(company,state)
-    return actions
+    return [deepcopy(act) for act in actions]
 
 def posible_factory_build(company : Company, state : State):
     actions = []

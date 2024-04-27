@@ -19,7 +19,8 @@ class Factory:
     
     def get_max_necessary(self, number_of_available_factories):
         return ProductCollection([AccountedProduct(p.product, p.amount*self.product_limit*number_of_available_factories) for p in self.necessary_products])
-    
+    def get_max_produced(self,  number_of_available_factories):
+        return ProductCollection([AccountedProduct(p.product, p.amount*self.product_limit*number_of_available_factories) for p in self.produced_products])
     def get_operation_cost(self,inflation_factor):
         return self.basic_operation_cost*inflation_factor
 

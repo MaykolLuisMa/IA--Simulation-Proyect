@@ -9,7 +9,7 @@ class Node:
         self.action=action 
         self.path_cost=path_cost
         self.deep = deep
-    
+        self.is_factible = company.id in state.companies
     def get_node_value(self):
         return get_company_value(self.company,self.state.market)
     

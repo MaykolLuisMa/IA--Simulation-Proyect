@@ -15,6 +15,7 @@ class State:
         self.agreements = agreements
         self.loans = loans
         self.conditions = conditions
+        self.week = 0
     def get_best_potential_factory(self):
         ganance = 0
         factory = None
@@ -40,6 +41,7 @@ def next_state(state : State,company_actions : List):
                 #print(f"products: {p.product}")
                 pass
         state.market.ejecute_iteration(state.conditions)
+        state.week += 1
         return state
 
 def compute_agreements(state : State):
@@ -69,7 +71,9 @@ def compute_operation_cost(state : State):
         state.companies.pop(id,None)
 
 def compute_company_actions(state : State, company_action : List):
+    print(f"week {state.week}")
     for act in company_action:
+  
         act.company = state.companies[act.company.id]
         act.state = state
         act.ejecute_action()

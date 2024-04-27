@@ -14,6 +14,8 @@ class Company:
         self.staff_capacity = staff_capacity
         self.basic_operation_cost = basic_operation_cost
         self.algorthm = algorithm
+    def __eq__(self,other):
+        return self.id == other.id
     def is_global_company(self):
         return False
     
@@ -90,7 +92,7 @@ class Global_Company(Company):
         buy_price = product.price
         
         porcent = buy_price/global_price
-        max_porcent = 0.90
+        max_porcent = utils.uniform_variation(0.90,1.0)
         if porcent <= 1:
             return True,int(product.amount*max_porcent)
         else:
@@ -116,16 +118,24 @@ def get_company_storage_limit(company : Company, product = None):
     products = ProductCollection([])
     for f,i in company.factories.items():
         products = add_products(products,f.get_max_necessary(i))
+        products = add_products(products,f.get_max_produced(i))
     if product == None:
         return products
     return products.get(product.id)
+def get_company_free_space(company : Company, product = None):
+    limits = get_company_storage_limit(company)
+    for p in limits:
+        current = 0 if company.products.get(p.product.id) == None else company.products.get(p.product.id).amount
+        limits.get(p.product.id).amount -= current
+    return limits 
 #______________________________________________________________________________
 def sell(company : Company, state, products : ProductCollection):
         state.market.add_seller(company, products)
 
-def buy(company, state, products : ProductCollection):
-        for p in get_company_storage_limit(company):
-            products.get(p.product.id).amount = min(products.get(p.product.id).amount, p.amount)
+def buy(company : Company, state, products : ProductCollection):
+        free_space = get_company_free_space(company) 
+        for p in products:
+            products.get(p.product.id).amount = min(free_space.get(p.product.id).amount, p.amount)
         #print(f"add buyer {[p.amount for p in products]}")
         state.market.add_buyer(company, products)
 
@@ -150,6 +160,10 @@ def pay_loan_indemnization(company : Company, loan : Loan):
 def produce(company : Company,state ,products : ProductCollection, factory : Tuple[Factory,int]):
         #print(f"disponible {[p.amount for p in products]}")
         necesary, produced = produce_for_all_factories(products,factory)
+
+        free_space = get_company_free_space(company)
+        for p in produced:
+            p.amount = min(p.amount,free_space.get(p.product.id).amount)
         #print(f"necesary {[p.amount for p in necesary]}")
         company.add_products(necesary)
         company.add_products(produced)

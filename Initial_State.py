@@ -7,7 +7,7 @@ from State import State
 from Factory import Factory
 import utils
 import random
-from Algorithms import a_star_algorithm
+from Algorithms import uniform_cost_search_algorithm, random_algorithm
 
 product_list = [Product(0,"porc","food",2000),Product(1,"swine meat","food",15)]#,Product(1,"chicken","food"),Product(1,"pork","food"),Product(1,"shrims","food")]
 
@@ -15,11 +15,11 @@ factory_list = [Factory(1,"Abattoir(pork)",5000,200,1,10,
                     ProductCollection([AccountedProduct(product_list[0],1)])
                     ,[AccountedProduct(product_list[1],150)])
                     ]
-company_list = [Company(0,"White Spider",100000,ProductCollection([AccountedProduct(product_list[0],1000),AccountedProduct(product_list[0],5000)]),{factory_list[0]:1},100,a_star_algorithm)]
+company_list = [Company(0,"White Spider",10000,ProductCollection([AccountedProduct(product_list[0],10),AccountedProduct(product_list[1],1000)]),{factory_list[0]:1},100,uniform_cost_search_algorithm)]
 
 def products_generator(products : List[Product]):
     amounts = [random.randrange(0,1000) for p in products]
-    in_sale = [Product_in_sale(p,utils.normal_variation(p.basic_price),amounts[i]) for i,p in enumerate(products)]
+    in_sale = [Product_in_sale(p,p.basic_price,amounts[i]) for i,p in enumerate(products)]
     to_buy = [AccountedProduct(p,amounts[i]) for i,p in enumerate(products)]
     return in_sale,to_buy
 in_sale,to_buy = products_generator(product_list)
