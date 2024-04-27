@@ -1,5 +1,5 @@
 from typing import List,Dict,Tuple
-from Product import AccountedProduct, ProductCollection
+from simulation.Product import AccountedProduct, ProductCollection
 
 class Factory:
     def __init__(self,id,name,building_cost : float,

@@ -1,6 +1,6 @@
 import utils
-from Company import get_company_value
-from State import State
+from simulation.Company import get_company_value
+from simulation.State import State
 class Node:
     def __init__(self,company, state : State, parent, action, path_cost,deep):
         self.company=company
@@ -10,6 +10,7 @@ class Node:
         self.path_cost=path_cost
         self.deep = deep
         self.is_factible = company.id in state.companies
+        print(f"Node validator: {self.is_factible}")
     def get_node_value(self):
         return get_company_value(self.company,self.state.market)
     

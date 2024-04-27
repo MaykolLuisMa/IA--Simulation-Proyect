@@ -1,7 +1,7 @@
 from typing import List, Dict, Tuple
-from Product import Personal,AccountedProduct, Product_in_sale, add_products, ProductCollection
-from Factory import Factory, calculate_build_cost, calculate_operation_cost, produce_for_all_factories
-from Loan import Loan
+from simulation.Product import Personal,AccountedProduct, Product_in_sale, add_products, ProductCollection
+from simulation.Factory import Factory, calculate_build_cost, calculate_operation_cost, produce_for_all_factories
+from simulation.Loan import Loan
 import math
 import utils
 class Company:
@@ -52,6 +52,7 @@ class Company:
              print("No valid")
              print(new_products.coin)
              print([p.amount for p in new_products])
+             raise ValueError("stop")
         return is_valid
     
     def evaluate_agreement(self, company, agreement) -> bool:
@@ -105,6 +106,17 @@ class Global_Company(Company):
     def is_global_company(self):
         return True
 
+
+def can_used(company : Company, product):
+    for fact in company.factories:
+        if product.id in [p.product.id for p in fact.necessary_products]:
+            return True
+    return False      
+def can_produce(company : Company, product):
+    for fact in company.factories:
+        if product.id in [p.product.id for p in fact.produced_products]:
+            return True
+    return False
 def get_company_value(corp : Company, market):
     val = 0
     val += corp.coin/market.get_inflation_factor()
@@ -165,9 +177,9 @@ def produce(company : Company,state ,products : ProductCollection, factory : Tup
         for p in produced:
             p.amount = min(p.amount,free_space.get(p.product.id).amount)
         #print(f"necesary {[p.amount for p in necesary]}")
-        company.add_products(necesary)
-        company.add_products(produced)
-
+        nec = company.add_products(necesary)
+        prod = company.add_products(produced)
+        return nec and prod
 def propose_agreement(company1, state, company2, agreement):
         if company1.evaluate_agreement(agreement):
             state.agreements.append(agreement)
