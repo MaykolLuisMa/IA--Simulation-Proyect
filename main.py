@@ -1,3 +1,5 @@
+#dependencias
+from nlp.nlp import *
 from typing import List
 from Company import Company, get_company_value
 from Market import Market
@@ -12,6 +14,7 @@ from Posible_Actions import Action
 from Initial_State import initial_state
 from Algorithms import get_company_action
 from Inform_Builder import build_informs
+import os
 class Simulation:
     def __init__(self, inicial_state : State):
         self.state = inicial_state
@@ -62,11 +65,23 @@ class Simulation:
                 print(f"{p.product.name}: {p.amount} units to buy")
             print("_____")
         print("_____________________________________________")
-    
 
-
+#visual  
 sim = Simulation(initial_state)
 sim.ejecution()
-print("_____________________________________________________________________")
-print("Informe:")
-print(build_informs(sim.register))
+print('')
+input('Press "enter" to continue...')
+os.system('clear')
+inform = build_informs(sim.register)
+
+while(True):
+    query = input('Enter your query:\n')
+    os.system('clear')
+    print('Loading...')
+    result = response(inform, query)
+    os.system('clear')
+    print('RESULTS:')
+    print(result)
+    print('')
+    input('Press "enter" to make another query...\n')
+    os.system('clear')
