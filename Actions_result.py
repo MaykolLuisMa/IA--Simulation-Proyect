@@ -13,6 +13,8 @@ def expand_node(node_to_expand : Node):
     node = deepcopy(node_to_expand)
     for action in Posible_Actions.determinate_posible_actions(node.company,node.state):
         c_company, c_state = action_result(action)
+        if c_company.id not in c_state.companies:
+            continue
         cost = node.path_cost + Posible_Actions.action_cost(node.company,node.state,c_state,action)
         yield Node(c_company,c_state,node_to_expand,action,cost,node_to_expand.deep+1)
 
