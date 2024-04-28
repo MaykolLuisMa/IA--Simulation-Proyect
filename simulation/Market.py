@@ -1,7 +1,7 @@
 from typing import List, Dict, Tuple
-from Company import Company ,Seller, Buyer, Global_Company
-from Product import Personal, Product_in_sale, AccountedProduct , market_Product_Dates, ProductCollection
-from Condition import Condition, compute_condition
+from simulation.Company import Company ,Seller, Buyer, Global_Company
+from simulation.Product import Personal, Product_in_sale, AccountedProduct , market_Product_Dates, ProductCollection
+from simulation.Condition import Condition, compute_condition
 from copy import deepcopy
 from utils import normal_variation, normalize_price, adjust_value
 import random

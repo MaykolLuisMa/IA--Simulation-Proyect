@@ -1,9 +1,9 @@
-from Graph_Search_Algorhitms import uniform_cost_search, get_next_node, greedy, random_search
-from Node import Node
-from Company import Company, can_produce, can_used
 import fuzzy as fz
-from State import State
 import numpy as np
+
+from search.Graph_Search_Algorhitms import uniform_cost_search, get_next_node, greedy, random_search
+from search.Node import Node
+from simulation.Company import Company
 
 def get_company_action(company : Company, state):
     return company.algorthm(company, state)

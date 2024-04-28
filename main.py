@@ -1,19 +1,19 @@
 #dependencias
 from nlp.nlp import *
 from typing import List
-from Company import Company, get_company_value
-from Market import Market
-from Agreement import Agreement
-from Loan import Loan
-from Condition import Condition
-from State import State, next_state
-from Register import Register
-from Node import Node
-from Graph_Search_Algorhitms import get_next_node
-from Posible_Actions import Action
-from Initial_State import initial_state
+from simulation.Company import Company, get_company_value
+from simulation.Market import Market
+from simulation.Agreement import Agreement
+from simulation.Loan import Loan
+from simulation.Condition import Condition
+from simulation.State import State, next_state
+from nlp.Register import Register
+from search.Node import Node
+from search.Graph_Search_Algorhitms import get_next_node
+from search.Posible_Actions import Action
+from simulation.Initial_State import initial_state
 from Algorithms import get_company_action
-from Inform_Builder import build_informs
+from nlp.Inform_Builder import build_informs
 import os
 class Simulation:
     def __init__(self, inicial_state : State):

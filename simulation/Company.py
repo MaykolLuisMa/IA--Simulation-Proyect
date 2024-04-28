@@ -1,7 +1,7 @@
 from typing import List, Dict, Tuple
-from Product import Personal,AccountedProduct, Product_in_sale, add_products, ProductCollection
-from Factory import Factory, calculate_build_cost, calculate_operation_cost, produce_for_all_factories
-from Loan import Loan
+from simulation.Product import Personal,AccountedProduct, Product_in_sale, add_products, ProductCollection
+from simulation.Factory import Factory, calculate_build_cost, calculate_operation_cost, produce_for_all_factories
+from simulation.Loan import Loan
 import math
 import utils
 class Company:
@@ -52,6 +52,7 @@ class Company:
              print("No valid")
              print(new_products.coin)
              print([p.amount for p in new_products])
+             raise ValueError("stop")
         return is_valid
     
     def evaluate_agreement(self, company, agreement) -> bool:
@@ -113,7 +114,7 @@ def can_used(company : Company, product):
     return False      
 def can_produce(company : Company, product):
     for fact in company.factories:
-        if product.id in  [p.product.id for p in fact.produced_products]:
+        if product.id in [p.product.id for p in fact.produced_products]:
             return True
     return False
 def get_company_value(corp : Company, market):

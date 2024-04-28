@@ -1,6 +1,6 @@
 import utils
-from Company import get_company_value
-from State import State
+from simulation.Company import get_company_value
+from simulation.State import State
 class Node:
     def __init__(self,company, state : State, parent, action, path_cost,deep):
         self.company=company

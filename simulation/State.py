@@ -1,12 +1,12 @@
-from Company import Company
-from Market import Market
-from Agreement import Agreement
-from Loan import Loan
-from Condition import Condition
+from simulation.Company import Company
+from simulation.Market import Market
+from simulation.Agreement import Agreement
+from simulation.Loan import Loan
+from simulation.Condition import Condition
 from typing import List,Tuple
 from copy import deepcopy
-from Product import ProductCollection
-from Factory import Factory
+from simulation.Product import ProductCollection
+from simulation.Factory import Factory
 class State:
     def __init__(self, companies : List[Company], market : Market, factories : List[Factory], agreements : List[Agreement],loans : List[Loan], conditions : List[Condition]):
         self.companies = {corp.id:corp for corp in companies}
