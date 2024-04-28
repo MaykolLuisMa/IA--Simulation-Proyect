@@ -30,7 +30,7 @@ def determinate_posible_actions(company : Company, state : State):
     return actions
 
 def posible_factory_build(company : Company, state : State):
-    actions = []
+    actions = []                                                                            
     for f in state.factories:
         build_cost = calculate_build_cost(f,company.factories,state.market.get_inflation_factor())
         operation_cost = company.get_operation_cost(state.market.get_inflation_factor())
