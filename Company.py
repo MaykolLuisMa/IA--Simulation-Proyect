@@ -113,7 +113,7 @@ def can_used(company : Company, product):
     return False      
 def can_produce(company : Company, product):
     for fact in company.factories:
-        if product.id in  [p.product.id for p in fact.produced_products]
+        if product.id in  [p.product.id for p in fact.produced_products]:
             return True
     return False
 def get_company_value(corp : Company, market):
