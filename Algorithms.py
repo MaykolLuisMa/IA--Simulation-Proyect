@@ -3,7 +3,8 @@ import numpy as np
 
 from search.Graph_Search_Algorhitms import uniform_cost_search, get_next_node, greedy, random_search
 from search.Node import Node
-from simulation.Company import Company
+from simulation.Company import Company, can_produce, can_used
+from simulation.State import State
 
 def get_company_action(company : Company, state):
     return company.algorthm(company, state)

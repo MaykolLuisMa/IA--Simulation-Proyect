@@ -1,10 +1,9 @@
 import skfuzzy as fuzzy
 from skfuzzy import control as ctrl
-from Company import get_company_storage_limit
+from simulation.Company import get_company_storage_limit, Company
 import numpy as np
-from Company import Company
-from State import State
-from Product import Product
+from simulation.State import State
+from simulation.Product import Product
 
 def product_universe(company, product: Product):
     max = get_company_storage_limit(company=company, product=product)
