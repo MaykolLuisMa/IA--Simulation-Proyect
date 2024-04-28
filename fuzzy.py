@@ -22,7 +22,7 @@ def price_univrerse(product: Product, state: State, factor = 2):
     return np.arange(0, max, 1)
 
 def product_membresy_func(universe, product: Product, Ant: bool):
-    fuzzy_set = ctrl.Antecedent(universe, product.name) if Ant else ctrl.Consequent(universe, product.name)
+    fuzzy_set = ctrl.Antecedent(universe, product.name) if Ant else ctrl.Consequent(universe, product.id)
     fuzzy_set.automf(5)
     return fuzzy_set
 def product_membresy_functions(universes, products: list[Product], Ant: bool):

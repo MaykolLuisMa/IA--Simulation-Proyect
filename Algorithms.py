@@ -5,7 +5,7 @@ from search.Graph_Search_Algorhitms import uniform_cost_search, get_next_node, g
 from search.Node import Node
 from simulation.Company import Company, can_produce, can_used
 from simulation.State import State
-
+from simulation.Product import Product
 def get_company_action(company : Company, state):
     return company.algorthm(company, state)
  
@@ -20,7 +20,7 @@ def uniform_cost_search_algorithm(company, state):
 def only_fuzzy_algorithm(company: Company, state: State):
     priority_universe = np.arange(0, 10, 1)
     priority_membresy_sell = []
-    produced_products = [x for x in company.products if not can_used(company, x)]
+    produced_products: list[Product] = [x for x in company.products if not can_used(company, x)]
     produced_products_universe = fz.product_universes(company, produced_products)
     produced_products_ant = fz.product_membresy_functions(produced_products_universe, produced_products, True)
     produced_products_con = fz.product_membresy_functions(produced_products_universe, produced_products, False)
@@ -29,7 +29,7 @@ def only_fuzzy_algorithm(company: Company, state: State):
     produce_rules = []
     i = 0
     for product in produced_products_ant:
-        priority = fz.ctrl.Consequent(priority_universe, f'sell {produced_products[i].name}')
+        priority = fz.ctrl.Consequent(priority_universe, f'{produced_products[i].id}')
         priority_membresy_sell.append(priority)
         priority.automf(5)
         sell_product_rules.append(fz.ctrl.rule(product['poor'] ,priority['poor']))
@@ -39,6 +39,10 @@ def only_fuzzy_algorithm(company: Company, state: State):
         sell_product_rules.append(fz.ctrl.rule(product['good'] ,priority['good']))
         i += 1
     
+
+
+
+
 def greedy_algorithm(company, state):
     node = Node(company,state,None,None,0,0)
     next_node = greedy(node)
