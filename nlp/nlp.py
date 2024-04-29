@@ -4,7 +4,7 @@ from nlp.prompt import *
 from nlp.utils import *
 
 #respuesta del modelo a la query ingresada por el usuario
-def json_results(sim: str, query: str) -> str:
+def response_result(sim: str, query: str) -> str:
   #cargar el server local
   client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
 
@@ -17,10 +17,10 @@ def json_results(sim: str, query: str) -> str:
     temperature=0.7,
   )
   
-  return response(completion.choices[0].message.content) #respuesta en formato json
+  return parse_json(completion.choices[0].message.content) #respuesta en formato json
   
 #respuesta del modelo a la definicion de las reglas del usuario
-def json_rules(rules: str) -> str:
+def response_rules(rules: str) -> str:
   #cargar el server local
   client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
 
@@ -33,5 +33,5 @@ def json_rules(rules: str) -> str:
     temperature=0.7,
   )
   
-  return response(completion.choices[0].message.content) #respuesta en formato json
+  return parse_json(completion.choices[0].message.content) #respuesta en formato json
   
