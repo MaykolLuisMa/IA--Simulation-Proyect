@@ -1,7 +1,7 @@
 from nlp.Register import Register
 from simulation.Initial_State import company_list, factory_list, product_list
 from typing import List
-from simulation.Company import build_factory, produce, buy, sell
+from simulation.Company import build_factory, produce, buy, sell, nothing
 from search.Posible_Actions import Action
 
 def action_dictionary(action : Action):
@@ -13,7 +13,8 @@ def action_dictionary(action : Action):
         return f"vendiò " + generate_list([f"{p.amount} unidades de {p.product.name}" for p in action.args[0]])
     if action.f == sell:
         return f"comprò " + generate_list([f"{p.amount} unidades de {p.product.name} a ${p.price}" for p in action.args[0]])
-    
+    if action.f == nothing:
+        return f"no hizo nada relevante"
 def build_informs(register: Register):
     total_inform = ""
     total_inform += company_inform()
