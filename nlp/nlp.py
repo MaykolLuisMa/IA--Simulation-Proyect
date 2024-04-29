@@ -1,7 +1,7 @@
 #dependencias
 from openai import OpenAI
 from nlp.prompt import *
-import json
+from nlp.utils import *
 
 #respuesta del modelo a la query ingresada por el usuario
 def response_result(sim: str, query: str) -> str:
