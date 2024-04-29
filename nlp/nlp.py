@@ -17,7 +17,7 @@ def response_result(sim: str, query: str) -> str:
     temperature=0.7,
   )
 
-  return parse_json(completion.choices[0].message.content) #respuesta en formato json
+  return parse_json(completion.choices[0].message.content)['result'] #respuesta en formato json
   
 #respuesta del modelo a la definicion de las reglas del usuario
 def response_rules(rules: str) -> str:
