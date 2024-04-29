@@ -2,7 +2,7 @@ from simulation.Product import Product, Product_in_sale, AccountedProduct,Produc
 from simulation.Company import Company,Seller,Buyer, Global_Company,get_company_value, build_factory, get_company_storage_limit
 from simulation.Market import Market
 from typing import List
-from simulation.Condition import Adaptation_5_porcent
+from simulation.Condition import Adaptation_5_porcent, Hyerinflation
 from simulation.State import State
 from simulation.Factory import Factory
 import utils
@@ -15,7 +15,7 @@ factory_list = [Factory(1,"Abattoir(pork)",5000,200,1,15,
                     ProductCollection([AccountedProduct(product_list[0],1)])
                     ,[AccountedProduct(product_list[1],150)])
                     ]
-company_list = [Company(0,"White Spider",100000,ProductCollection([AccountedProduct(product_list[0],10),AccountedProduct(product_list[1],1000)]),{factory_list[0]:1},100,random_algorithm)]
+company_list = [Company(0,"White Spider",100000,ProductCollection([AccountedProduct(product_list[0],10),AccountedProduct(product_list[1],1000)]),{factory_list[0]:1},100,greedy_algorithm)]
 
 def products_generator(products : List[Product]):
     amounts = [random.randrange(0,1000) for p in products]

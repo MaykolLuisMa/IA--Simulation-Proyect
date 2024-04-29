@@ -5,6 +5,7 @@ from simulation.Company import Company, get_company_value
 from simulation.Market import Market
 from simulation.Agreement import Agreement
 from simulation.Loan import Loan
+from simulation.graphics import show
 from simulation.Condition import Condition
 from simulation.State import State, next_state
 from nlp.Register import Register, is_over
@@ -73,19 +74,24 @@ class Simulation:
 #visual
 sim = Simulation(initial_state)
 sim.ejecution()
+show(sim.register.inflation)
+for cr in sim.register.companies_registers.values():
+    show(cr.value)
 print('')
 input('Press "enter" to continue...')
 os.system('clear')
 inform = build_informs(sim.register)
+print(inform)
 
-while(True):
-    query = input('Enter your query:\n')
-    os.system('clear')
-    print('Loading...')
-    result = response_result(inform, query)
-    os.system('clear')
-    print('RESULTS:')
-    print(result)
-    print('')
-    input('Press "enter" to make another query...\n')
-    os.system('clear')
+#while(True):
+#    query = input('Enter your query:\n')
+#    os.system('clear')
+#    print('Loading...')
+#    result = response(inform, query)
+#    os.system('clear')
+#    print('RESULTS:')
+#    print(result)
+#    print('')
+#    input('Press "enter" to make another query...\n')
+#    os.system('clear')
+
