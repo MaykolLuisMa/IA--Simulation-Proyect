@@ -13,6 +13,7 @@ def results_prompt(sim: str, query: str):
   prompt += f'"{query}"'
   return prompt
 
+#prompt generado para el ruling
 def rules_prompt(rules: str):
   prompt = 'Necesito que me envies un objeto de tipo json solamente con los campos "rules" y "weeks".'
   prompt += 'Te voy a enviar una consulta de un usuario que contiene un conjunto de reglas para llevar a cabo durante un cierto numero de semanas de la simulacion.'
