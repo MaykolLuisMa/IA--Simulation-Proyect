@@ -34,7 +34,7 @@ def next_state(state : State,company_actions : List):
         compute_agreements(state)
         compute_loans(state)
         compute_company_actions(state, company_actions)
-        compute_operation_cost(state)
+        deleted = compute_operation_cost(state)
         for s in state.market.sellers:
             #int(f"{s.company.is_global_company()}")
             for p in s.in_sale:
@@ -42,7 +42,7 @@ def next_state(state : State,company_actions : List):
                 pass
         state.market.ejecute_iteration(state.conditions)
         state.week += 1
-        return state
+        return state, deleted
 
 def compute_agreements(state : State):
     for a in state.agreements:
@@ -66,12 +66,12 @@ def compute_operation_cost(state : State):
         cost = corp.get_operation_cost(inflation_factor)
         is_soportable = corp.add_products(ProductCollection([],-cost))
         if is_soportable == False:
-            to_delete.append(corp.id)            
-    for id in to_delete:
-        state.companies.pop(id,None)
-
+            to_delete.append(corp)            
+    for corp in to_delete:
+        state.companies.pop(corp.id,None)
+    return to_delete
 def compute_company_actions(state : State, company_action : List):
-    print(f"week {state.week}")
+    #print(f"week {state.week}")
     for act in company_action:
   
         act.company = state.companies[act.company.id]
