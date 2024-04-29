@@ -79,19 +79,19 @@ for cr in sim.register.companies_registers.values():
     show(cr.value)
 print('')
 input('Press "enter" to continue...')
-os.system('clear')
+os.system('cls')
 inform = build_informs(sim.register)
 print(inform)
 
 while(True):
     query = input('Enter your query:\n')
-    os.system('clear')
+    os.system('cls')
     print('Loading...')
     result = response_result(inform, query)
-    os.system('clear')
+    os.system('cls')
     print('RESULTS:')
     print(result)
     print('')
     input('Press "enter" to make another query...\n')
-    os.system('clear')
+    os.system('cls')
 
