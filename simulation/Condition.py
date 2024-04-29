@@ -29,7 +29,7 @@ class Hyerinflation(Condition):
     
     def is_occurred(self):
         if not self.is_active:
-            self.is_active = random.randint(-50,50) == 0
+            self.is_active = random.randint(-5,5) == 0
         return self.is_active
     
     def brazil_dates(self):
