@@ -1,7 +1,7 @@
 from simulation.Company import Company, produce, buy, sell, build_factory, get_company_storage_limit
 from simulation.State import State
 from simulation.Product import AccountedProduct,ProductCollection,Product_in_sale, add_products
-from simulation.Factory import Factory, calculate_build_cost
+from simulation.Factory import Factory, calculate_build_cost, calculate_alpha_for_all_factories
 from typing import List
 from copy import deepcopy
 class Action:
@@ -45,12 +45,13 @@ def posible_sells(company : Company, state : State):
         actions.append(Action(sell,company, state, [ProductCollection([product_in_sale])]))
     return actions
 
-def posible_buys(company : Company, state):
+def posible_buys(company : Company, state : State):
     actions = []
     products = company.products.opponent()
     products = add_products(products, get_company_storage_limit(company))
     for p in products:
-        actions.append(Action(buy,company,state,[ProductCollection([p])]))
+        if state.market.get_global_seller().in_sale.get(p.product.id).price*p.amount + company.get_operation_cost(state.market.get_inflation_factor()) < company.coin:
+            actions.append(Action(buy,company,state,[ProductCollection([p])]))
     return actions
 
 def posible_produces(company : Company, state : State):
@@ -61,11 +62,12 @@ def posible_produces(company : Company, state : State):
 
 def posible_produces_by_factory(company : Company,state,disponible_products : ProductCollection,
                      factory):
-    alpha = factory[0].calculate_alpha(disponible_products)*factory[1]
+    alpha = calculate_alpha_for_all_factories(disponible_products, factory)
     if alpha == 0:
         return []
     actions = []
-    for i in range(1,alpha):
-        necesary_products = ProductCollection([AccountedProduct(p.product,p.amount*i) for p in factory[0].necessary_products])
-        actions.append(Action(produce, company,state,[necesary_products,(factory[0],i)]))
+    #print(f"Alpaha {alpha}")
+    #for i in range(1,alpha+1):
+    necesary_products = ProductCollection([AccountedProduct(p.product,p.amount*alpha) for p in factory[0].necessary_products])
+    actions.append(Action(produce, company,state,[necesary_products,factory]))
     return actions
