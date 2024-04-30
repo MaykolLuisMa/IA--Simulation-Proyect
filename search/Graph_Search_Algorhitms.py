@@ -4,15 +4,15 @@ from search.Node import Node, is_goal
 from simulation.Company import get_company_value, nothing
 from search.Posible_Actions import Action
 import random
-#def non_action(company,state):
-#    return Action(nothing,company,state,[])
 
 def greedy(initial_node : Node):
     nodes = []
     for node in expand_node(initial_node):
         if node.is_factible:
             nodes.append(node)
-    return sorted(nodes, key=lambda n: -n.get_node_value(n))[0]
+    print([n.get_node_value() for n in nodes])
+   # input()
+    return sorted(nodes, key=lambda n: -n.get_node_value())[0]
 
 def limited_best_first_search(initial_node : Node,increment, limit, f):
     frontier = utils.PriorityQueue([initial_node],key=f)
@@ -44,7 +44,7 @@ def get_next_node(initial_node : Node, goal_node : Node):
 
 def g(n : Node): return n.path_cost
 def uniform_cost_search(initial_node):
-    return limited_best_first_search(initial_node,1.2,50,g)
+    return limited_best_first_search(initial_node,1.1,50,g)
 
 def random_search(initial_node : Node):
     nodes = []

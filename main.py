@@ -5,9 +5,10 @@ from simulation.Company import Company, get_company_value
 from simulation.Market import Market
 from simulation.Agreement import Agreement
 from simulation.Loan import Loan
+from simulation.graphics import show
 from simulation.Condition import Condition
 from simulation.State import State, next_state
-from nlp.Register import Register
+from nlp.Register import Register, is_over
 from search.Node import Node
 from search.Graph_Search_Algorhitms import get_next_node
 from search.Posible_Actions import Action
@@ -27,27 +28,31 @@ class Simulation:
             self.register.inflation.append(inflation_factor)
             
             actions = []
+            print(f"Week :{self.state.week}")
             for corp in self.state.companies.values():
-                print(f"company value: {get_company_value(corp,self.state.market)}")
-                print(f"company coin {corp.coin}")
+                print(f"Company value: {get_company_value(corp,self.state.market)}")
+                print(f"Company coin {corp.coin}")
                 self.register.companies_registers[corp.id].value.append(get_company_value(corp,self.state.market))
                 
                 action = get_company_action(corp,self.state)
                 print(f"Action: {action}")
-                print(f"company products {[(p.product.name, p.amount) for p in corp.products]}")
-                
+                print(f"Company products {[(p.product.name, p.amount) for p in corp.products]}")
+
+                for fact in corp.factories.items():
+                    print(f"Factoires {fact}")    
                 self.register.companies_registers[corp.id].actions.append(action)
                 actions.append(action)
-            if len(self.state.companies.values()) == 0:
-                break
-            for i in self.state.companies[0].factories.items():
-                print(f"Factoires {i}")
             for p in self.state.market.get_global_seller().in_sale:
                 print(f"Market sell product {p.product.name} {p.amount} ${p.price}")
             for p in self.state.market.get_global_buyer().to_buy:
                 print(f"Market buyer product {p.product.name} {p.amount}")
-            self.state = next_state(self.state,actions)
-            input()
+            self.state, deleted = next_state(self.state,actions)
+            if len(self.state.companies.values()) == 0:
+                break
+            self.register.event.append("")
+            for corp in deleted:
+                corp[self.state.week] += is_over(corp)
+#            input()
 
     def print_products(self):
         print("___Dates___")
@@ -66,9 +71,12 @@ class Simulation:
             print("_____")
         print("_____________________________________________")
 
-#visual  
+#visual
 sim = Simulation(initial_state)
 sim.ejecution()
+show(sim.register.inflation)
+for cr in sim.register.companies_registers.values():
+    show(cr.value)
 print('')
 input('Press "enter" to continue...')
 os.system('cls')
@@ -79,7 +87,8 @@ while(True):
     query = input('Enter your query:\n')
     os.system('cls')
     print('Loading...')
-    result = response(inform, query)
+    result = response_result(inform, query)
+
     os.system('cls')
     print('RESULTS:')
     print(result)

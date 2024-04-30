@@ -48,7 +48,9 @@ class Factory:
 def produce_for_all_factories(products : ProductCollection, factories : Tuple[Factory,int]):
     factory = Factory(factories[0].id,factories[0].name,factories[0].building_cost, factories[0].basic_operation_cost, factories[0].time_to_build,factories[1]*factories[0].product_limit, factories[0].necessary_products, factories[0].produced_products)
     return factory.produce(products)
-
+def calculate_alpha_for_all_factories(products : ProductCollection, factories : Tuple[Factory,int]):
+    factory = Factory(factories[0].id,factories[0].name,factories[0].building_cost, factories[0].basic_operation_cost, factories[0].time_to_build,factories[1]*factories[0].product_limit, factories[0].necessary_products, factories[0].produced_products)
+    return factory.calculate_alpha(products)
 def calculate_build_cost(factory : Factory, factories : Dict[Factory,int],inflation_factor):
     factories_list = list(factories.keys())
     if len(factories_list) == 1 and factories_list[0].id == factory.id:

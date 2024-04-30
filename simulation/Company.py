@@ -48,11 +48,13 @@ class Company:
         if is_valid:
              self.coin = new_products.coin
              self.products = new_products
-        else:
-             print("No valid")
-             print(new_products.coin)
-             print([p.amount for p in new_products])
-             raise ValueError("stop")
+        #else:
+        #     print("No valid")
+        #     print(new_products.coin)
+        #     print(self.factories.values())
+        #     print([p.amount for p in new_products])
+             
+             #input("stop")
         return is_valid
     
     def evaluate_agreement(self, company, agreement) -> bool:
