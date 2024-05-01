@@ -1,9 +1,10 @@
 import skfuzzy as fuzzy
 from skfuzzy import control as ctrl
-from simulation.Company import get_company_storage_limit, Company
+from simulation.Company import get_company_storage_limit, Company, sell
 import numpy as np
 from simulation.State import State
 from simulation.Product import Product
+from search.Posible_Actions import Action
 
 def product_universe(company, product: Product):
     max = get_company_storage_limit(company=company, product=product)
@@ -42,3 +43,7 @@ def materia_prima_rules(universes: dict, membresy_func):
     for uni in universes:
         final_set = final_set[membresy_func] & universes[uni][membresy_func]
     return final_set 
+def execute_action(actions: dict, company, state):
+    diccionario = dict(sorted(actions.items(), key=lambda item: item[1][0], reverse= True))
+    for dic in diccionario:
+        return Action(diccionario[dict][1][0], company, state, diccionario[dict][1][1])
