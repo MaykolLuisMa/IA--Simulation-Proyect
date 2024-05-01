@@ -141,7 +141,9 @@ def get_company_free_space(company : Company, product = None):
     for p in limits:
         current = 0 if company.products.get(p.product.id) == None else company.products.get(p.product.id).amount
         limits.get(p.product.id).amount -= current
-    return limits 
+    if product == None: 
+        return limits 
+    return limits.get(product.id)
 #______________________________________________________________________________
 def sell(company : Company, state, products : ProductCollection):
         state.market.add_seller(company, products)

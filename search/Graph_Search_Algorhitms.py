@@ -1,18 +1,31 @@
 import utils
 from search.Actions_result import expand_node
-from search.Node import Node, is_goal
+from search.Node import Node, is_goal, get_node_value, get_node_value_by_coin
 from simulation.Company import get_company_value, nothing
 from search.Posible_Actions import Action
 import random
 
-def greedy(initial_node : Node):
+
+def coin_greedy(company, state):
+    return greedy_algorithm(company, state, get_node_value_by_coin)
+
+def pib_greedy(company, state):
+     return greedy_algorithm(company, state, get_node_value)
+
+def greedy_algorithm(company, state, f):
+    node = Node(company,state,None,None,0,0)
+    next_node = greedy(node, f)
+    return next_node.action
+
+def greedy(initial_node : Node, f):
     nodes = []
     for node in expand_node(initial_node):
         if node.is_factible:
             nodes.append(node)
-    print([n.get_node_value() for n in nodes])
+    #print([n.get_node_value() for n in nodes])
    # input()
-    return sorted(nodes, key=lambda n: -n.get_node_value())[0]
+    return sorted(nodes, key=lambda n: -f(n))[0]
+
 
 def limited_best_first_search(initial_node : Node,increment, limit, f):
     frontier = utils.PriorityQueue([initial_node],key=f)
