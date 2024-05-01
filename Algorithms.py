@@ -26,15 +26,21 @@ def only_fuzzy_algorithm(company: Company, state: State):
     priority_universe = np.arange(0, 10, 1)
     priority_membresy_sell = {}
     priority_membresy_buy = {}
+    inputs = {}
+    ## --- All procts --- ##
+    all_products: list[Product] = company.products
+    all_products_universe = fz.product_universes(company, all_products)
+    all_products_ant = fz.product_membresy_functions(all_products_universe, all_products, True)
+
     ## --- produced products --- ##
     produced_products: list[Product] = [x for x in company.products if not can_used(company, x)]
-    produced_products_universe = fz.product_universes(company, produced_products)
-    produced_products_ant = fz.product_membresy_functions(produced_products_universe, produced_products, True)
+    produced_products_universe = {id: all_products_universe[id] for id in [objeto.id for objeto in produced_products] if id in all_products_universe}    #  fz.product_universes(company, produced_products)
+    produced_products_ant =  {id: all_products_ant[id] for id in [objeto.id for objeto in produced_products] if id in all_products_ant}               #fz.product_membresy_functions(produced_products_universe, produced_products, True)
     
     ## --- raw material --- ##
     raw_material: list[Product] = [x for x in company.products if not can_produce(company, x)]
-    raw_material_universe = fz.product_universes(company, raw_material)
-    raw_material_ant = fz.product_membresy_functions(raw_material_universe, raw_material, True)
+    raw_material_universe = {id: all_products_universe[id] for id in [objeto.id for objeto in raw_material] if id in all_products_universe}     #fz.product_universes(company, raw_material)
+    raw_material_ant = {id: all_products_ant[id] for id in [objeto.id for objeto in raw_material] if id in all_products_ant}     #fz.product_membresy_functions(raw_material_universe, raw_material, True)
 
 
     produced_products_con = fz.product_membresy_functions(produced_products_universe, produced_products, False)
@@ -42,9 +48,11 @@ def only_fuzzy_algorithm(company: Company, state: State):
     buy_product_rules = []
     produce_rules = []
     
+    ### ------ selling rules ------- ###
     for product in produced_products:
         priority = fz.ctrl.Consequent(priority_universe, f'sell {product.id}')
         priority_membresy_sell[f'sell {product.id}'] = priority
+        #inputs[product.id] = 
         priority.automf(5)
         sell_product_rules.append(fz.ctrl.rule(produced_products_ant[product.id]['poor'] ,priority['poor']))
         sell_product_rules.append(fz.ctrl.rule(produced_products_ant[product.id]['mediocre'] ,priority['mediocre']))
@@ -52,10 +60,11 @@ def only_fuzzy_algorithm(company: Company, state: State):
         sell_product_rules.append(fz.ctrl.rule(produced_products_ant[product.id]['decent'] ,priority['decent']))
         sell_product_rules.append(fz.ctrl.rule(produced_products_ant[product.id]['good'] ,priority['good']))
 
-
+    ### ------ buying rules------ ###
     for product in raw_material:
         priority = fz.ctrl.Consequent(priority_universe, f'buy {product.id}')
         priority_membresy_buy[f'buy {product.id}'] = Action(sell, state, [product])
+        #inputs[product.id] = 
         priority.automf(5)
         buy_product_rules.append(fz.ctrl.rule(raw_material_ant[product.id]['poor'] ,priority['poor']))
         buy_product_rules.append(fz.ctrl.rule(raw_material_ant[product.id]['mediocre'] ,priority['mediocre']))
