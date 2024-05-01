@@ -1,7 +1,9 @@
+
 import fuzzy as fz
 import numpy as np
 
-from search.Graph_Search_Algorhitms import uniform_cost_search, get_next_node, greedy, random_search
+from search.Graph_Search_Algorhitms import uniform_cost_search, get_next_node, random_search, pib_greedy, coin_greedy
+
 from search.Node import Node
 from search.Actions_result import Action
 from simulation.Company import Company, can_produce, can_used, sell, build_factory, buy, produce, get_company_free_space, Buyer
@@ -19,7 +21,6 @@ def uniform_cost_search_algorithm(company, state):
     goal_node = uniform_cost_search(node)
     next_node = get_next_node(node,goal_node)
     return next_node.action
-
 
 def only_fuzzy_algorithm(company: Company, state: State):
     
@@ -131,12 +132,11 @@ def only_fuzzy_algorithm(company: Company, state: State):
         execute[act] = (action_priority[act], args[act])
     return fz.execute_action(execute, company, state) 
 
+def pib_greedy_algorithm(company, state):
+    return pib_greedy(company, state)
 
-
-def greedy_algorithm(company, state):
-    node = Node(company,state,None,None,0,0)
-    next_node = greedy(node)
-    return next_node.action
+def coin_greedy_algorithm(company, state):
+    return coin_greedy(company, state)
 
 def random_algorithm(company, state):
     node = Node(company,state,None,None,0,0)

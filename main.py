@@ -22,8 +22,12 @@ class Simulation:
         self.last_iteration_dates = []
         self.register = Register(self.state.companies.values())
 
-    def ejecution(self,duration_limit = 100):
-        for i in range(duration_limit):
+    def ejecution(self,duration = 100):
+        for i in range(duration):
+            if len(self.state.companies.values()) == 0:
+                print("BREAK")
+                break
+
             inflation_factor = self.state.market.get_inflation_factor()
             self.register.inflation.append(inflation_factor)
             
@@ -47,12 +51,10 @@ class Simulation:
             for p in self.state.market.get_global_buyer().to_buy:
                 print(f"Market buyer product {p.product.name} {p.amount}")
             self.state, deleted = next_state(self.state,actions)
-            if len(self.state.companies.values()) == 0:
-                break
             self.register.event.append("")
             for corp in deleted:
                 corp[self.state.week] += is_over(corp)
-#            input()
+            input()
 
     def print_products(self):
         print("___Dates___")
@@ -73,7 +75,8 @@ class Simulation:
 
 #visual
 sim = Simulation(initial_state)
-sim.ejecution()
+sim.ejecution(10)
+sim.ejecution(20)
 show(sim.register.inflation)
 for cr in sim.register.companies_registers.values():
     show(cr.value)
