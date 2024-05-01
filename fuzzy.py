@@ -40,5 +40,5 @@ def money_membresy_func(universe, Ant: bool):
 def materia_prima_rules(universes: dict, membresy_func):
     final_set = universes.items[0][1] 
     for uni in universes:
-        final_set = final_set & universes[uni]
+        final_set = final_set[membresy_func] & universes[uni][membresy_func]
     return final_set 
