@@ -8,7 +8,7 @@ from search.Posible_Actions import Action
 
 def product_universe(company, product: Product):
     max = get_company_storage_limit(company=company, product=product)
-    return np.arange(0, max.amount+1, 0.1)
+    return np.arange(0, max.amount+5, 0.1)
 def product_universes(company, products: list[Product]):
     universes = {}
     for product in products:
@@ -48,3 +48,5 @@ def execute_action(actions: dict, company, state):
     diccionario = dict(sorted(actions.items(), key=lambda item: item[1][0], reverse= True))
     for dic in diccionario:
         return Action(diccionario[dic][1][0], company, state, diccionario[dic][1][1])
+#def build_rules(lm_input: list, company, state):
+

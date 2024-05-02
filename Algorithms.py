@@ -30,7 +30,6 @@ def only_fuzzy_algorithm(company: Company, state: State):
     priority_membresy_sell = {}
     priority_membresy_buy = {}
     priority_membresy_produce = {}
-    priority_membresy_build = []
     inputs = {}
 
     money_universe = fz.capital_universe(company, state, 10000)
@@ -42,15 +41,14 @@ def only_fuzzy_algorithm(company: Company, state: State):
 
     ## --- produced products --- ##
     produced_products: list[Product] = [x.product for x in company.products if not can_used(company, x.product)]
-    produced_products_ant =  {id: all_products_ant[id] for id in [objeto.id for objeto in produced_products]}               #fz.product_membresy_functions(produced_products_universe, produced_products, True)
+    produced_products_ant =  {id: all_products_ant[id] for id in [objeto.id for objeto in produced_products]}
     
     ## --- raw material --- ##
     raw_material: list[Product] = [x.product for x in company.products if not can_produce(company, x.product)]
-    raw_material_ant = {id: all_products_ant[id] for id in [objeto.id for objeto in raw_material]}     #fz.product_membresy_functions(raw_material_universe, raw_material, True)
+    raw_material_ant = {id: all_products_ant[id] for id in [objeto.id for objeto in raw_material]}
 
     ## --- produccion products --- ##
     production_products: list[Product] = [x.product for x in company.products if can_produce(company, x.product)]
-    production_products_ant = {id: all_products_ant[id] for id in [objeto.id for objeto in production_products]}
 
     ### args ###
     args = {}
@@ -74,6 +72,7 @@ def only_fuzzy_algorithm(company: Company, state: State):
         sell_product_rules.append(ctrl.Rule(produced_products_ant[product.id]['decent'] ,priority['decent']))
         sell_product_rules.append(ctrl.Rule(produced_products_ant[product.id]['good'] ,priority['good']))
 
+
     ### ------ buying rules ------ ###
     for product in raw_material:
         if len(fact) == 0: break
@@ -86,7 +85,7 @@ def only_fuzzy_algorithm(company: Company, state: State):
         buy_product_rules.append(ctrl.Rule(raw_material_ant[product.id]['average'] ,priority['average']))
         buy_product_rules.append(ctrl.Rule(raw_material_ant[product.id]['mediocre'] ,priority['decent']))
         buy_product_rules.append(ctrl.Rule(raw_material_ant[product.id]['poor'] ,priority['good']))
-    
+        
     ### ------ production rules ------ ###
     for product in production_products:
         if len(fact) == 0: break
@@ -128,6 +127,7 @@ def only_fuzzy_algorithm(company: Company, state: State):
     rules = buy_product_rules + sell_product_rules + produce_rules + build_factory_rules if len(fact) > 0 else [build_factory_rules]
     system = ctrl.ControlSystem(rules)
 
+
     for product in all_products:
         if len(fact) == 0: break 
         inn = company.products.get(product.id).amount
@@ -142,6 +142,9 @@ def only_fuzzy_algorithm(company: Company, state: State):
     for act in action_priority.output:
         execute[act] = (action_priority.output[act], args[act])
     return fz.execute_action(execute, company, state) 
+
+
+
 
 def pib_greedy_algorithm(company, state):
     return pib_greedy(company, state)
