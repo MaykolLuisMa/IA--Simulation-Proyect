@@ -7,15 +7,15 @@ from simulation.State import State
 from simulation.Factory import Factory
 import utils
 import random
-from Algorithms import uniform_cost_search_algorithm, random_algorithm, coin_greedy_algorithm, pib_greedy_algorithm
+from Algorithms import uniform_cost_search_algorithm, random_algorithm, coin_greedy_algorithm, pib_greedy_algorithm, only_fuzzy_algorithm
 
 product_list = [Product(0,"porc","food",2000),Product(1,"swine meat","food",15)]#,Product(1,"chicken","food"),Product(1,"pork","food"),Product(1,"shrims","food")]
 
 factory_list = [Factory(1,"Abattoir(pork)",5000,200,1,15,
                     ProductCollection([AccountedProduct(product_list[0],1)])
-                    ,[AccountedProduct(product_list[1],150)])
+                    ,ProductCollection([AccountedProduct(product_list[1],150)]))
                     ]
-company_list = [Company(0,"White Spider",100000,ProductCollection([AccountedProduct(product_list[0],10),AccountedProduct(product_list[1],1000)]),{factory_list[0]:1},100,random_algorithm)]
+company_list = [Company(0,"White Spider",100000,ProductCollection([AccountedProduct(product_list[0],10),AccountedProduct(product_list[1],1000)]),{factory_list[0]:1},100,only_fuzzy_algorithm)]
 
 def products_generator(products : List[Product]):
     amounts = [random.randrange(0,1000) for p in products]
