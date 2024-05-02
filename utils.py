@@ -74,5 +74,45 @@ def add_products(products1 : List, products2 : List):
         temporal.extend(products1[index:])
         temporal.extend(products2[index:])
         temporal_set = set(temporal)
-        
-        
+
+#devolver si una cadena es un numero y en caso de serlo, devolver el numero
+def is_int(num: str):
+  try:
+    parse = int(num)
+    return (True, parse)
+  
+  except:
+    return (False, None)
+
+#de una lista de elementos y una cadena, tomar la interseccion
+def clean_query(products: list, query: str) -> list:
+  result = []
+  parse = query.split(' ')
+  
+  for element in parse:
+    if element in products:
+      result.append({'value': element, 'type': 'product'})
+    
+    elif element == 'o' or element == 'y':
+      if result[-1] != 'o' and result[-1] != 'and':
+        result.append({'value': element, 'type': 'operator'})
+  
+  return result 
+
+#mostrar una cadena a partir de una lista, para brindar legibilidad al LM
+def show_list(list: list):
+  result = ''
+  
+  for i in range(len(list)):
+    result += f'{list[i]}, ' if i < len(list) - 1 else list[i]
+    
+  return result
+
+#crear una copia de los elementos de una lista
+def clone(list: list):
+  result = []
+  
+  for element in list:
+    result.append(element) 
+  
+  return result

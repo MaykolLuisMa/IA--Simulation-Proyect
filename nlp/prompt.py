@@ -14,13 +14,17 @@ def build_prompt(sim: str, query: str):
   return prompt
 
 #prompt generado para el ruling
-def rules_prompt(rules: str):
-  prompt = 'Necesito que me envies un objeto de tipo json solamente con los campos "rules" y "weeks".'
-  prompt += 'Te voy a enviar una consulta de un usuario que contiene un conjunto de reglas para llevar a cabo durante un cierto numero de semanas de la simulacion.'
-  prompt = 'Esta es la informacion proporcionada por el usuario:\n'
-  prompt += f'"{rules}."\n'
-  prompt += 'En dependencia a la informacion ingresada, procesa los datos y devuelveme un objeto tipo json con la siguiente estructura:\n'
-  prompt += '"rules": "resumen de las reglas del usuario",\n'
-  prompt += '"weeks": "un entero que represente solamente la cantidad de semanas durante las cuals el usuario quiere llevar a cabo las reglas"\n'
-  prompt += 'Necesito que la informacion almacenada en el objeto .json sea lo mas concreta y objetiva posible'
+def rules_prompt(rules: str, products: str, keywords: str, actions: str):
+  prompt = 'A continuacion te voy a enviar un conjunto de palabras clave:\n'
+  prompt += f'"{keywords}".\n'
+  prompt += 'Ahora te voy a enviar una consulta de un usuario que va a referirse a algunos de los siguientes productos y va a realizar una accion especifica:\n'
+  prompt += f'"{products}".\n'
+  prompt += 'Esta es la consulta:\n'
+  prompt += f'{rules}.\n'
+  prompt += 'Necesito que me envies un objeto tipo json con la siguiente estructura:\n'
+  prompt += 'Cada llave es cada producto que aparezca en la consulta del usuario y su respectivo valor es una de las palabras claves que te proporcione, depende a la que mas se asemeje a la descripcion del producto proporcionada por el usuario en la consulta.'
+  prompt += 'Ahora te voy a enviar un conjunto de acciones:\n'
+  prompt += f'"{actions}".\n'
+  prompt += f'Ademas agrega un campo llamado "action", donde solamente quiero que me almacenes objeto tipo list de 2 posiciones donde el primer elemento sea la accion correspndiente y el segundo elemento una de las palabras claves siguientes: "{keywords}".\n'
+  prompt += 'Necesito la respuesta lo mas objetiva posible no quiero en el json campos que no sean productos y en el campo "action" una lista de 2 elementos'
   return prompt
