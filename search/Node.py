@@ -13,14 +13,12 @@ class Node:
         if self.action != None and self.action.f == nothing:
             self.is_factible = True
         #print(f"Node validator: {self.is_factible}")
-    def get_node_value(self):
-        return get_company_value(self.company,self.state.market)
     
     def __lt__(self, other): return self.path_cost < other.path_cost
 
 def is_goal(initial_node : Node, final_node : Node, increment = 1.1):
-    initial_node_value = initial_node.get_node_value()
-    final_node_value = final_node.get_node_value()
+    initial_node_value = get_node_value(initial_node)
+    final_node_value = get_node_value(final_node)
     
     
     #print("initial")
@@ -31,3 +29,7 @@ def is_goal(initial_node : Node, final_node : Node, increment = 1.1):
     #print("_________________")
     #input()
     return final_node_value/initial_node_value > increment
+def get_node_value(node):
+        return get_company_value(node.company,node.state.market)
+def get_node_value_by_coin(node : Node):
+     return node.company.coin/node.state.market.get_inflation_factor()

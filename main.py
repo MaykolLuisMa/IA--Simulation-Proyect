@@ -158,8 +158,6 @@ class Simulation:
             for p in self.state.market.get_global_buyer().to_buy:
                 print(f"Market buyer product {p.product.name} {p.amount}")
             self.state, deleted = next_state(self.state,actions)
-            if len(self.state.companies.values()) == 0:
-                break
             self.register.event.append("")
             for corp in deleted:
                 corp[self.state.week] += is_over(corp)
@@ -234,6 +232,7 @@ while(True):
   break
 
 sim = Simulation(initial_state)
+
 sim.ejecution()
 #show(sim.register.inflation)
 #for cr in sim.register.companies_registers.values():
@@ -251,4 +250,5 @@ while(True):
   print(result)
   print('')
   query = input('Press "enter" to make another query...\n')
+
 
