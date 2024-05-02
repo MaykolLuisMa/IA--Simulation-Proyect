@@ -26,6 +26,7 @@ def build_informs(register: Register):
 
 def iteration_inform(register : Register, i):
     inform = f"La semana {i+1}:\n La inflaciòn fue del {register.inflation[i]}.\n"
+    inform+= register.event[i]
     for reg in register.companies_registers.values():
         inform += f"La compañìa {reg.name} tuvo un valor estimado de ${reg.value[i]}. "
         inform += "Dicha compañìa " + action_dictionary(reg.actions[i])

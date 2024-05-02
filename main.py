@@ -47,14 +47,14 @@ class Simulation:
                 self.register.companies_registers[corp.id].actions.append(action)
                 actions.append(action)
             for p in self.state.market.get_global_seller().in_sale:
-                print(f"Market sell product {p.product.name} {p.amount} ${p.price}")
+               print(f"Market sell product {p.product.name} {p.amount} ${p.price}")
             for p in self.state.market.get_global_buyer().to_buy:
-                print(f"Market buyer product {p.product.name} {p.amount}")
+               print(f"Market buyer product {p.product.name} {p.amount}")
             self.state, deleted = next_state(self.state,actions)
             self.register.event.append("")
             for corp in deleted:
-                corp[self.state.week] += is_over(corp)
-            input()
+               self.register.event[self.state.week-1] += is_over(corp)
+            #input()
 
     def print_products(self):
         print("___Dates___")
@@ -77,7 +77,6 @@ class Simulation:
 sim = Simulation(initial_state)
 sim.ejecution(10)
 sim.ejecution(20)
-show(sim.register.inflation)
 for cr in sim.register.companies_registers.values():
     show(cr.value)
 print('')
