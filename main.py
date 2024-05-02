@@ -238,7 +238,7 @@ sim = Simulation(initial_state)
 sim.ejecution()
 #show(sim.register.inflation)
 #for cr in sim.register.companies_registers.values():
-#    show(cr.value)
+show(cr.value)
 os.system('clear')
 inform = build_informs(sim.register)
 query = input('Now, put some querys about the simulation.Enter your query\n')
