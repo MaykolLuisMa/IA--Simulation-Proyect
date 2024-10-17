@@ -37,7 +37,7 @@ class Simulation:
         for element in list_companies:
           rules_x_company[element.name] = 0
         
-        os.system('clear')
+        os.system('cls')
         print('Below we show you a couple of companies. Select a company, after that, you can define some rules and aply to it')
         print('COMPANIES')
         
@@ -57,7 +57,7 @@ class Simulation:
             if is_int(choice)[1] > 0 and is_int(choice)[1] <= len(companies):
               company = companies[is_int(choice)[1] - 1] #empres seleccionada por el usuario
               rules_x_company[company.name] += 1
-              os.system('clear')
+              os.system('cls')
               query = input('Fine. Now, define some rules and a number of weeks in a natural lenguaje query. Enter your query and then press "enter" to continue:\n')
               
               while(True):
@@ -86,7 +86,7 @@ class Simulation:
                   break
                 
                 handle_company = ''
-                os.system('clear')
+                os.system('cls')
                 handle_company = input('Put "si" if you want to keep handling or "no" to run simulation\n')
               
                 while(True):
@@ -101,7 +101,7 @@ class Simulation:
                   if rules_x_company[company.name] == 4:
                     companies.remove(company)
                     
-                  os.system('clear')
+                  os.system('cls')
                   print('Below we show you a couple of companies. Select a company, after that, you can define some rules and aply to it')
                   print('COMPANIES')
 
@@ -124,7 +124,7 @@ class Simulation:
             choice = input('Ingress a valid option\n')  
         
         #hacer que el usuario defina el tiempo 
-        os.system('clear')
+        os.system('cls')
         duration_limit = input('Put the number of weeks that you want to take the simulation\n')
         
         while(True):
@@ -197,7 +197,7 @@ class Simulation:
 while(True):
   #menu de agregar empresas
   list_companies = list(initial_state.companies.values())
-  os.system('clear')
+  os.system('cls')
   print('COMPANIES')
 
   for i in range(len(list_companies)):
@@ -218,7 +218,7 @@ while(True):
       query = input('Ingress a valid option\n')
 
   if query == '1':
-    os.system('clear')
+    os.system('cls')
     name = input('Ingress a none empty name\n')
     
     while(name == '' or name in [x.name for x in list_companies]):
@@ -237,20 +237,20 @@ sim = Simulation(initial_state)
 
 sim.ejecution()
 #show(sim.register.inflation)
-#for cr in sim.register.companies_registers.values():
-show(cr.value)
-os.system('clear')
+for cr in sim.register.companies_registers.values():
+    show(cr.value)
+os.system('cls')
 inform = build_informs(sim.register)
 query = input('Now, put some querys about the simulation.Enter your query\n')
 
 while(True):  
-  os.system('clear')
+  os.system('cls')
   print('Loading...')
   result = response_result(inform, query)
-  os.system('clear')
+  os.system('cls')
   print('RESULTS:')
   print(result)
   print('')
-  query = input('Press "enter" to make another query...\n')
+  query = input('Make another query and press "enter"...\n')
 
 
